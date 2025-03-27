@@ -81,7 +81,7 @@ const SignIn = () => {
           to="/"
           className="flex items-center gap-2 self-center font-medium"
         >
-          Team Sync.
+          StudySphere
         </Link>
         </div>
         

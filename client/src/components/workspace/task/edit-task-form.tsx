@@ -38,21 +38,22 @@ import { TaskPriorityEnum, TaskStatusEnum } from "@/constant";
 import useGetProjectsInWorkspaceQuery from "@/hooks/api/use-get-projects";
 import useGetWorkspaceMembers from "@/hooks/api/use-get-workspace-members";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { createTaskMutationFn } from "@/lib/api";
+import { editTaskMutationFn } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 
-export default function CreateTaskForm(props: {
+export default function EditTaskForm(props: {
+  taskId?: string;
   projectId?: string;
   onClose: () => void;
 }) {
-  const { projectId, onClose } = props;
+  const { taskId, projectId, onClose } = props;
 
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: createTaskMutationFn,
+    mutationFn: editTaskMutationFn,
   });
 
   const { data, isLoading } = useGetProjectsInWorkspaceQuery({
@@ -65,7 +66,7 @@ export default function CreateTaskForm(props: {
   const projects = data?.projects || [];
   const members = memberData?.members || [];
 
-  //Workspace Projects
+  //Workspace Plans
   const projectOptions = projects?.map((project) => {
     return {
       label: (
@@ -104,7 +105,7 @@ export default function CreateTaskForm(props: {
     }),
     description: z.string().trim(),
     projectId: z.string().trim().min(1, {
-      message: "Project is required",
+      message: "Plan is required",
     }),
     status: z.enum(
       Object.values(TaskStatusEnum) as [keyof typeof TaskStatusEnum],
@@ -146,6 +147,7 @@ export default function CreateTaskForm(props: {
     const payload = {
       workspaceId,
       projectId: values.projectId,
+      taskId,
       data: {
         ...values,
         dueDate: values.dueDate.toISOString(),
@@ -187,7 +189,7 @@ export default function CreateTaskForm(props: {
             className="text-xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1
            text-center sm:text-left"
           >
-            Create Task
+            Update Task
           </h1>
           <p className="text-muted-foreground text-sm leading-tight">
             Organize and manage tasks, resources, and team collaboration
@@ -239,7 +241,6 @@ export default function CreateTaskForm(props: {
               />
             </div>
 
-            {/* {ProjectId} */}
 
             {!projectId && (
               <div>
@@ -255,7 +256,7 @@ export default function CreateTaskForm(props: {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a plan" />
+                            <SelectValue placeholder="Select a project" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -460,7 +461,7 @@ export default function CreateTaskForm(props: {
               disabled={isPending}
             >
               {isPending && <Loader className="animate-spin" />}
-              Create
+              Update
             </Button>
           </form>
         </Form>

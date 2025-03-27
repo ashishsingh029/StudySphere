@@ -1,7 +1,7 @@
 export const customEmojis = [
   {
     id: "project_management",
-    name: "Project Management",
+    name: "Plan Management",
     emojis: [
       {
         id: "📈",

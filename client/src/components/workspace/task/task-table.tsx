@@ -116,7 +116,7 @@ const DataTableFilterToolbar: FC<DataTableFilterToolbarProps> = ({
   const projects = data?.projects || [];
   const members = memberData?.members || [];
 
-  //Workspace Projects
+  //Workspace Plans
   const projectOptions = projects?.map((project) => {
     return {
       label: (
@@ -200,7 +200,7 @@ const DataTableFilterToolbar: FC<DataTableFilterToolbarProps> = ({
 
       {!projectId && (
         <DataTableFacetedFilter
-          title="Projects"
+          title="Plans"
           multiSelect={false}
           options={projectOptions}
           disabled={isLoading}

@@ -107,7 +107,7 @@ export function NavProjects() {
     <>
       <SidebarGroup className="group-data-[collapsible=icon]:hidden">
         <SidebarGroupLabel className="w-full justify-between pr-0">
-          <span>Projects</span>
+          <span>Plans</span>
 
           <PermissionsGuard requiredPermission={Permissions.CREATE_PROJECT}>
             <button
@@ -132,7 +132,7 @@ export function NavProjects() {
           {!isPending && projects?.length === 0 ? (
             <div className="pl-3">
               <p className="text-xs text-muted-foreground">
-                There is no projects in this Workspace yet. Projects you create
+                There are no plans in this Workspace yet. Plans you create
                 will show up here.
               </p>
               <PermissionsGuard requiredPermission={Permissions.CREATE_PROJECT}>
@@ -142,7 +142,7 @@ export function NavProjects() {
                   className="h-0 p-0 text-[13px] underline font-semibold mt-4"
                   onClick={onOpen}
                 >
-                  Create a project
+                  Create a Plan
                   <ArrowRight />
                 </Button>
               </PermissionsGuard>
@@ -175,7 +175,7 @@ export function NavProjects() {
                         onClick={() => navigate(`${projectUrl}`)}
                       >
                         <Folder className="text-muted-foreground" />
-                        <span>View Project</span>
+                        <span>View Plan</span>
                       </DropdownMenuItem>
 
                       <PermissionsGuard
@@ -187,7 +187,7 @@ export function NavProjects() {
                           onClick={() => onOpenDialog(item)}
                         >
                           <Trash2 className="text-muted-foreground" />
-                          <span>Delete Project</span>
+                          <span>Delete Plan</span>
                         </DropdownMenuItem>
                       </PermissionsGuard>
                     </DropdownMenuContent>
@@ -217,7 +217,7 @@ export function NavProjects() {
         isLoading={isLoading}
         onClose={onCloseDialog}
         onConfirm={handleConfirm}
-        title="Delete Project"
+        title="Delete Plan"
         description={`Are you sure you want to delete ${
           context?.name || "this item"
         }? This action cannot be undone.`}

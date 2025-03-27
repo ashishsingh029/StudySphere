@@ -28,7 +28,7 @@ const ProjectHeader = () => {
 
   const project = data?.project;
 
-  // Fallback if no project data is found
+  // Fallback if no plan data is found
   const projectEmoji = project?.emoji || "📊";
   const projectName = project?.name || "Untitled project";
 

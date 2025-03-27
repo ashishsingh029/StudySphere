@@ -131,7 +131,7 @@ export default function EditWorkspaceForm() {
                         rows={6}
                         disabled={!canEditWorkspace}
                         className="disabled:opacity-90 disabled:pointer-events-none"
-                        placeholder="Our team organizes marketing projects and tasks here."
+                        placeholder="Our team organizes marketing plans and tasks here."
                         {...field}
                       />
                     </FormControl>

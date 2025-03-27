@@ -22,7 +22,7 @@ const WorkspaceDashboard = () => {
         </div>
         <Button onClick={onOpen}>
           <Plus />
-          New Project
+          New Plan
         </Button>
       </div>
       <WorkspaceAnalytics />
@@ -30,7 +30,7 @@ const WorkspaceDashboard = () => {
         <Tabs defaultValue="projects" className="w-full border rounded-lg p-2">
           <TabsList className="w-full justify-start border-0 bg-gray-50 px-1 h-12">
             <TabsTrigger className="py-2" value="projects">
-              Recent Projects
+              Recent Plans
             </TabsTrigger>
             <TabsTrigger className="py-2" value="tasks">
               Recent Tasks

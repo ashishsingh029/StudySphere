@@ -246,3 +246,20 @@ export const deleteTaskMutationFn = async ({
   );
   return response.data;
 };
+
+export const editTaskMutationFn = async({
+  taskId,
+  projectId,
+  workspaceId
+} : {
+  taskId: string,
+  projectId: string,
+  workspaceId: string
+}): Promise<{
+  message: string;
+}> => {
+  const response = await API.put(
+    `task/${taskId}/project/${projectId}/workspace/${workspaceId}/update`
+  );
+  return response.data;
+};

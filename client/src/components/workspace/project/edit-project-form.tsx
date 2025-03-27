@@ -40,7 +40,7 @@ export default function EditProjectForm(props: {
 
   const formSchema = z.object({
     name: z.string().trim().min(1, {
-      message: "Project title is required",
+      message: "Plan title is required",
     }),
     description: z.string().trim(),
   });
@@ -112,10 +112,10 @@ export default function EditProjectForm(props: {
             className="text-xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1
            text-center sm:text-left"
           >
-            Edit Project
+            Edit Plan
           </h1>
           <p className="text-muted-foreground text-sm leading-tight">
-            Update the project details to refine task management
+            Update the plan details to refine task management
           </p>
         </div>
         <Form {...form}>
@@ -145,7 +145,7 @@ export default function EditProjectForm(props: {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                      Project title
+                      Plan title
                     </FormLabel>
                     <FormControl>
                       <Input placeholder="" className="!h-[48px]" {...field} />
@@ -162,7 +162,7 @@ export default function EditProjectForm(props: {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                      Project description
+                      Plan description
                       <span className="text-xs font-extralight ml-2">
                         Optional
                       </span>
@@ -170,7 +170,7 @@ export default function EditProjectForm(props: {
                     <FormControl>
                       <Textarea
                         rows={4}
-                        placeholder="Projects description"
+                        placeholder="plan description"
                         {...field}
                       />
                     </FormControl>

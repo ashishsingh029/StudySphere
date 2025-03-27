@@ -81,7 +81,7 @@ export default function CreateWorkspaceForm({
           </h1>
           <p className="text-muted-foreground text-lg leading-tight">
             Boost your productivity by making it easier for everyone to access
-            projects in one location.
+            plans in one location.
           </p>
         </div>
         <Form {...form}>

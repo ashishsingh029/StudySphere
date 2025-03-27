@@ -152,7 +152,7 @@ const AllMembers = () => {
                                       </p>
                                       <p className="text-sm text-muted-foreground">
                                         {role.name === "ADMIN" &&
-                                          `Can view, create, edit tasks, project and manage settings .`}
+                                          `Can view, create, edit tasks, plans and manage settings .`}
 
                                         {role.name === "MEMBER" &&
                                           `Can view,edit only task created by.`}
