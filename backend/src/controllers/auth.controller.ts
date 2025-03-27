@@ -72,24 +72,36 @@ export const loginController = asyncHandler(
 
 export const logOutController = asyncHandler(
   async (req: Request, res: Response) => {
+    console.log("Logging out...");
+
     req.logout((err) => {
       if (err) {
         console.error("Logout error:", err);
-        return res
-          .status(HTTPSTATUS.INTERNAL_SERVER_ERROR)
-          .json({ error: "Failed to log out" });
+        return res.status(500).json({ error: "Failed to log out" });
       }
-    });
 
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Session destruction error:", err);
-        return res
-          .status(HTTPSTATUS.INTERNAL_SERVER_ERROR)
-          .json({ error: "Failed to log out" });
+      if (!req.session) {
+        return res.status(200).json({ message: "Logged out, no active session" });
       }
-      res.clearCookie("connect.sid", { path: "/" });
-      return res.status(HTTPSTATUS.OK).json({ message: "Logged out successfully" });
+
+      req.session.destroy((err) => {
+        if (err) {
+          console.error("Session destruction error:", err);
+          return res.status(500).json({ error: "Failed to destroy session" });
+        }
+
+        // Explicitly clear the session cookie
+        res.clearCookie("connect.sid", {
+          path: "/",
+          httpOnly: true,
+          secure: config.NODE_ENV === "production",
+          sameSite: "lax",
+        });
+
+        console.log("Session destroyed, cookie cleared");
+        return res.status(200).json({ message: "Logged out successfully" });
+      });
     });
   }
 );
+
