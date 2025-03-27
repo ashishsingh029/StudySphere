@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
   if (isLoading) {
     return <DashboardSkeleton />;
   }
-  console.log("Protected route sending back to login");
+  console.log("User in protected route.tsx = ", user);
   return user ? <Outlet /> : <Navigate to="/" replace />;
 };
 
