@@ -7,7 +7,6 @@ import useGetWorkspaceQuery from "@/hooks/api/use-get-workspace";
 import { useNavigate } from "react-router-dom";
 import usePermissions from "@/hooks/use-permissions";
 import { PermissionType } from "@/constant";
-import { skip } from "node:test";
 
 // Define the context shape
 type AuthContextType = {
