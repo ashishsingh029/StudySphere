@@ -88,7 +88,7 @@ export const logOutController = asyncHandler(
           .status(HTTPSTATUS.INTERNAL_SERVER_ERROR)
           .json({ error: "Failed to log out" });
       }
-    
+      res.clearCookie("connect.sid", { path: "/" });
       return res.status(HTTPSTATUS.OK).json({ message: "Logged out successfully" });
     });
   }
