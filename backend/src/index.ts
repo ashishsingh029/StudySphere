@@ -39,7 +39,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "*",
+    origin: config.FRONTEND_ORIGIN,
     credentials: true,
   })
 );
