@@ -60,7 +60,7 @@ const SignIn = () => {
         const user = data.user;
         // console.log(user);
         const decodedUrl = returnUrl ? decodeURIComponent(returnUrl) : null;
-        navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
+        setTimeout(() => navigate(decodedUrl || `/workspace/${user.currentWorkspace}`), 5000)
       },
       onError: (error) => {
         toast({
