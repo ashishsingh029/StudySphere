@@ -24,6 +24,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
+  cors({
+    origin: config.FRONTEND_ORIGIN,
+    credentials: true,
+  })
+);
+
+app.use(
   session({
     secret: config.SESSION_SECRET,
     resave: false,
@@ -40,13 +47,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(
-  cors({
-    origin: config.FRONTEND_ORIGIN,
-    credentials: true,
-  })
-);
 
 app.use(`${BASE_PATH}/auth`, authRoutes);
 app.use(`${BASE_PATH}/user`, isAuthenticated, userRoutes);
