@@ -58,9 +58,10 @@ const SignIn = () => {
     mutate(values, {
       onSuccess: (data) => {
         const user = data.user;
-        // console.log(user);
+        console.log("User in SignIn.tsx success ", user);
         const decodedUrl = returnUrl ? decodeURIComponent(returnUrl) : null;
-        setTimeout(() => navigate(decodedUrl || `/workspace/${user.currentWorkspace}`), 5000)
+        console.log("decoded url = ", decodedUrl)
+        navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
       },
       onError: (error) => {
         toast({
