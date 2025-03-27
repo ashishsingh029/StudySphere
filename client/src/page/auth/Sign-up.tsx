@@ -59,11 +59,11 @@ const SignUp = () => {
       onSuccess: () => {
         navigate("/");
       },
-      onError: (error) => {
+      onError: (error: any) => {
         console.log(error);
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response.data.message,
           variant: "destructive",
         });
       },
