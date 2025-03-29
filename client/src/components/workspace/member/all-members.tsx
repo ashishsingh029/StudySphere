@@ -26,12 +26,7 @@ import { toast } from "@/hooks/use-toast";
 import { Permissions } from "@/constant";
 const AllMembers = () => {
   const { user, hasPermission } = useAuthContext();
-  console.log(user?.currentWorkspace);
-  
-
   const canChangeMemberRole = hasPermission(Permissions.CHANGE_MEMBER_ROLE);
-  console.log(canChangeMemberRole);
-  
 
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
