@@ -11,6 +11,7 @@ import {
   CreateTaskPayloadType,
   CreateWorkspaceResponseType,
   EditProjectPayloadType,
+  EditTaskPayloadType,
   ProjectByIdPayloadType,
   ProjectResponseType,
 } from "../types/api.type";
@@ -204,6 +205,14 @@ export const createTaskMutationFn = async ({
   return response.data;
 };
 
+export const getTaskByIdQueryFn = async({
+  workspaceId, projectId, taskId
+}:EditTaskPayloadType) => {
+  const response = await API.get(`task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`);
+  console.log(response);
+}
+ 
+
 export const getAllTasksQueryFn = async ({
   workspaceId,
   keyword,
@@ -250,16 +259,13 @@ export const deleteTaskMutationFn = async ({
 export const editTaskMutationFn = async({
   taskId,
   projectId,
-  workspaceId
-} : {
-  taskId: string,
-  projectId: string,
-  workspaceId: string
-}): Promise<{
+  workspaceId,
+  data,
+} : EditTaskPayloadType): Promise<{
   message: string;
 }> => {
   const response = await API.put(
-    `task/${taskId}/project/${projectId}/workspace/${workspaceId}/update`
+    `task/${taskId}/project/${projectId}/workspace/${workspaceId}/update`,data
   );
   return response.data;
 };
