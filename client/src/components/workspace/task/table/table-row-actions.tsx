@@ -17,6 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { deleteTaskMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
+import { useParams } from "react-router-dom";
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
@@ -31,8 +32,13 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     mutationFn: deleteTaskMutationFn,
   });
 
+  const param = useParams();
+  const projectId = param.projectId as string
+  console.log(projectId)
+  
   const taskId = row.original._id as string;
   const taskCode = row.original.taskCode;
+  console.log(taskId)
 
   const handleConfirm = () => {
     mutate(
