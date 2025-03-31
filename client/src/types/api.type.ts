@@ -103,6 +103,25 @@ export type ChangeWorkspaceMemberRoleType = {
   };
 };
 
+export type MemberType = {
+  member: {
+    _id: string;
+    userId: {
+        _id: string;
+        name: string;
+        email: string;
+        profilePicture: string | null;
+    };
+    workspaceId: string;
+    role: {
+        _id: string;
+        name: string;
+    };
+    joinedAt: string;
+    createdAt: string;
+  }
+}
+
 export type AllMembersInWorkspaceResponseType = {
   message: string;
   members: {

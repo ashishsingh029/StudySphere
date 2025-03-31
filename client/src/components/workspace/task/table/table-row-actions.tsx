@@ -30,10 +30,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
 
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
-  // const param = useParams();
-  // const projectId = param.projectId as string;
-  // const taskId = row.original._id as string;
-  // const taskCode = row.original.taskCode;
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteTaskMutationFn,
@@ -85,9 +81,9 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="sm:max-w-lg max-h-auto my-5 border-0">
           <DialogTitle className="sr-only">Edit Task</DialogTitle>
-          <DialogDescription>
+          {/* <DialogDescription>
             Update the details of your task to keep the project organized.
-          </DialogDescription>
+          </DialogDescription> */}
           <EditTaskForm task={task} onClose={() => setIsEditOpen(false)} />
         </DialogContent>
       </Dialog>
