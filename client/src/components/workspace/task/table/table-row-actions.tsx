@@ -8,7 +8,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
@@ -18,52 +17,38 @@ import useWorkspaceId from "@/hooks/use-workspace-id";
 import { deleteTaskMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { useParams } from "react-router-dom";
+import EditTaskDialog from "../edit-task-dialog"; // Import the dialog component
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const [openDeleteDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false); // Add state for edit dialog
+
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
+  const param = useParams();
+  const projectId = param.projectId as string;
+  const taskId = row.original._id as string;
+  const taskCode = row.original.taskCode;
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteTaskMutationFn,
   });
 
-  const param = useParams();
-  const projectId = param.projectId as string
-  console.log(projectId)
-  
-  const taskId = row.original._id as string;
-  const taskCode = row.original.taskCode;
-  console.log(taskId)
-
-  const handleConfirm = () => {
+  const handleDeleteConfirm = () => {
     mutate(
-      {
-        workspaceId,
-        taskId,
-      },
+      { workspaceId, taskId },
       {
         onSuccess: (data) => {
-          queryClient.invalidateQueries({
-            queryKey: ["all-tasks", workspaceId],
-          });
-          toast({
-            title: "Success",
-            description: data.message,
-            variant: "success",
-          });
-          setTimeout(() => setOpenDialog(false), 100);
+          queryClient.invalidateQueries({ queryKey: ["all-tasks", workspaceId] });
+          toast({ title: "Success", description: data.message, variant: "success" });
+          setTimeout(() => setOpenDeleteDialog(false), 100);
         },
         onError: (error) => {
-          toast({
-            title: "Error",
-            description: error.message,
-            variant: "destructive",
-          });
+          toast({ title: "Error", description: error.message, variant: "destructive" });
         },
       }
     );
@@ -73,39 +58,40 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-          >
+          <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
             <MoreHorizontal />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem className="cursor-pointer">
+          {/* Open Edit Dialog */}
+          <DropdownMenuItem onClick={() => setOpenEditDialog(true)} className="cursor-pointer">
             Edit Task
           </DropdownMenuItem>
+
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className={`!text-destructive cursor-pointer ${taskId}`}
-            onClick={() => setOpenDialog(true)}
-          >
+
+          {/* Open Delete Confirmation Dialog */}
+          <DropdownMenuItem className="!text-destructive cursor-pointer" onClick={() => setOpenDeleteDialog(true)}>
             Delete Task
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Delete Confirmation Dialog */}
       <ConfirmDialog
         isOpen={openDeleteDialog}
         isLoading={isPending}
-        onClose={() => setOpenDialog(false)}
-        onConfirm={handleConfirm}
+        onClose={() => setOpenDeleteDialog(false)}
+        onConfirm={handleDeleteConfirm}
         title="Delete Task"
-        description={`Are you sure you want to delete ${taskCode}`}
+        description={`Are you sure you want to delete ${taskCode}?`}
         confirmText="Delete"
         cancelText="Cancel"
       />
+
+      {/* Edit Task Dialog */}
+      <EditTaskDialog projectId={projectId} taskId={taskId} isOpen={openEditDialog} onClose={() => setOpenEditDialog(false)} />
     </>
   );
 }
