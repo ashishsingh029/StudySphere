@@ -9,7 +9,6 @@ const ProtectedRoute = () => {
   if (isLoading) {
     return <DashboardSkeleton />;
   }
-  console.log("User in protected route.tsx = ", user);
   return user ? <Outlet /> : <Navigate to="/" replace />;
 };
 

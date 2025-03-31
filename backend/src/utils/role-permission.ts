@@ -39,7 +39,7 @@ export const RolePermissions: Record<RoleType, Array<PermissionType>> = {
   ],
   MEMBER: [
     Permissions.VIEW_ONLY,
-    Permissions.CREATE_TASK,
+    // Permissions.CREATE_TASK,
     Permissions.EDIT_TASK,
   ],
 };

@@ -16,8 +16,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { deleteTaskMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import { useParams } from "react-router-dom";
-import EditTaskDialog from "../edit-task-dialog"; // Import the dialog component
+import { Dialog, DialogTitle, DialogContent, DialogDescription } from "@/components/ui/dialog";
+import EditTaskForm from "../edit-task-form";
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
@@ -25,27 +25,30 @@ interface DataTableRowActionsProps {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false); // Add state for edit dialog
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
 
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
-  const param = useParams();
-  const projectId = param.projectId as string;
-  const taskId = row.original._id as string;
-  const taskCode = row.original.taskCode;
+  // const param = useParams();
+  // const projectId = param.projectId as string;
+  // const taskId = row.original._id as string;
+  // const taskCode = row.original.taskCode;
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteTaskMutationFn,
   });
 
-  const handleDeleteConfirm = () => {
+  const task = row.original;
+
+  const handleConfirm = () => {
     mutate(
-      { workspaceId, taskId },
+      { workspaceId, taskId: task._id },
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ["all-tasks", workspaceId] });
           toast({ title: "Success", description: data.message, variant: "success" });
-          setTimeout(() => setOpenDeleteDialog(false), 100);
+          setOpenDeleteDialog(false);
         },
         onError: (error) => {
           toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -64,34 +67,44 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          {/* Open Edit Dialog */}
-          <DropdownMenuItem onClick={() => setOpenEditDialog(true)} className="cursor-pointer">
+          <DropdownMenuItem onClick={() => setIsEditOpen(true)} className="cursor-pointer">
             Edit Task
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
-
-          {/* Open Delete Confirmation Dialog */}
-          <DropdownMenuItem className="!text-destructive cursor-pointer" onClick={() => setOpenDeleteDialog(true)}>
+          <DropdownMenuItem
+            className="!text-destructive cursor-pointer"
+            onClick={() => setOpenDeleteDialog(true)}
+          >
             Delete Task
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Edit Task Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="sm:max-w-lg max-h-auto my-5 border-0">
+          <DialogTitle className="sr-only">Edit Task</DialogTitle>
+          <DialogDescription>
+            Update the details of your task to keep the project organized.
+          </DialogDescription>
+          <EditTaskForm task={task} onClose={() => setIsEditOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm Delete Dialog */}
       <ConfirmDialog
         isOpen={openDeleteDialog}
         isLoading={isPending}
         onClose={() => setOpenDeleteDialog(false)}
-        onConfirm={handleDeleteConfirm}
+        onConfirm={handleConfirm}
         title="Delete Task"
-        description={`Are you sure you want to delete ${taskCode}?`}
+        description={`Are you sure you want to delete ${task.taskCode}?`}
         confirmText="Delete"
         cancelText="Cancel"
       />
 
       {/* Edit Task Dialog */}
-      <EditTaskDialog projectId={projectId} taskId={taskId} isOpen={openEditDialog} onClose={() => setOpenEditDialog(false)} />
     </>
   );
 }
