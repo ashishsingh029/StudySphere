@@ -17,20 +17,13 @@ export function DeleteMemberDialog({ member }: { member?: MemberType }) {
         mutationFn: deleteMemberMutationFn,
     });
 
-    // console.log(
-    //     queryClient.getQueryCache().getAll().map(query => query.queryKey)
-    // );
-    
-
     const handleConfirm = () => {
         if (!member?._id) return;
         mutate(
             { workspaceId, memberId: member?._id as string},
             {
                 onSuccess: (data) => {
-                    // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
-                    queryClient.invalidateQueries({ queryKey: ["workspace", workspaceId] });
-
+                    queryClient.invalidateQueries({ queryKey: ["members", workspaceId] });
                     toast({ title: "Success", description: data.message, variant: "success" });
                     setOpenDeleteDialog(false);
                 },
