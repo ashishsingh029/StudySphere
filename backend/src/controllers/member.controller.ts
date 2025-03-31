@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../middlewares/asyncHandler.middleware";
 import { z } from "zod";
 import { HTTPSTATUS } from "../config/http.config";
-import { joinWorkspaceByInviteService } from "../services/member.service";
+import { getMemberRoleInWorkspace, joinWorkspaceByInviteService, removeMemberFromWorkspaceServive } from "../services/member.service";
+import { roleGuard } from "../utils/roleGuard";
+import { Permissions, Roles } from "../enums/role.enum";
 
 export const joinWorkspaceController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -21,3 +23,16 @@ export const joinWorkspaceController = asyncHandler(
     });
   }
 );
+export const removeMemberFromWorkspaceController = asyncHandler(
+  async (req: Request, res: Response) => {
+    const workspaceId = z.string().parse(req.params.workspaceId);
+    const memberId = z.string().parse(req.params.memberId);
+    const userId = req.user?._id;
+    const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+    roleGuard(role, [Permissions.REMOVE_MEMBER])
+    await removeMemberFromWorkspaceServive(memberId, workspaceId);
+    return res.status(HTTPSTATUS.OK).json({
+      message: "Successfully Removed From workspace"
+    });
+  }
+)

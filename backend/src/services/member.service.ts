@@ -29,7 +29,6 @@ export const getMemberRoleInWorkspace = async (
       ErrorCodeEnum.ACCESS_UNAUTHORIZED
     );
   }
-
   const roleName = member.role?.name;
 
   return { role: roleName };
@@ -71,3 +70,11 @@ export const joinWorkspaceByInviteService = async (
 
   return { workspaceId: workspace._id, role: role.name };
 };
+
+export const removeMemberFromWorkspaceServive = async (
+  memberId: string, 
+  workspaceId: string
+) => {
+  await MemberModel.findOneAndDelete({ _id: memberId, workspaceId: workspaceId });
+  return { success: true }
+}
