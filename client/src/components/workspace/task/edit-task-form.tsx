@@ -114,7 +114,6 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
             <div className="h-full">
                 <div className="mb-5 pb-2 border-b">
                     <h1 className="text-xl font-semibold mb-1 text-center sm:text-left">Edit Task</h1>
-                    <p className="text-muted-foreground text-sm leading-tight">Update task details to refine project management</p>
                 </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -133,13 +132,13 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
                                 )}
                             />
                         </div>
-                        <div>
+                        <div className="!mt-2">
                             <FormField
                                 control={form.control}
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="description" className="dark:text-[#f1f7feb5] text-sm">Task Description</FormLabel>
+                                        <FormLabel htmlFor="description" className="dark:text-[#f1f7feb5] text-sm">Task Description (optional)</FormLabel>
                                         <FormControl>
                                             <Textarea id="description" rows={4} placeholder="Task description" {...field} disabled={memberRole?.role.name == "MEMBER"} />
                                         </FormControl>
@@ -196,7 +195,7 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
                                 )}
                             />
                         </div>
-                        <div className="mt2">
+                        <div className="!mt-2">
                             <FormField
                                 control={form.control}
                                 name="status"
@@ -219,7 +218,7 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
                                 )}
                             />
                         </div>
-                        <div className="mb-4">
+                        <div className="!mt-2">
                             <FormField
                                 control={form.control}
                                 name="priority"
@@ -244,7 +243,7 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
                             />
                         </div>
                         <Button
-                            className="flex place-self-end  h-[40px] text-white font-semibold"
+                            className="flex place-self-end  h-[40px] mt-4 text-white font-semibold"
                             type="submit"
                             disabled={isPending}
                         >
