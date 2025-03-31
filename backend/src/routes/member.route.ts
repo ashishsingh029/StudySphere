@@ -4,5 +4,5 @@ import { joinWorkspaceController, removeMemberFromWorkspaceController } from "..
 const memberRoutes = Router();
 
 memberRoutes.post("/workspace/:inviteCode/join", joinWorkspaceController);
-memberRoutes.delete("/:memberId/workspace/:workspaceId", removeMemberFromWorkspaceController)
+memberRoutes.delete("/:memberId/workspace/:workspaceId/delete", removeMemberFromWorkspaceController)
 export default memberRoutes;
