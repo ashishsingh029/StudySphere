@@ -1,26 +1,11 @@
 import { useState } from "react";
-import { Row } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
-import { Member, MemberType, TaskType } from "@/types/api.type";
+import { MemberType } from "@/types/api.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useWorkspaceId from "@/hooks/use-workspace-id";
-import { deleteTaskMutationFn } from "@/lib/api";
+import { deleteMemberMutationFn} from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import { Dialog, DialogTitle, DialogContent, DialogDescription } from "@/components/ui/dialog";
-
-// interface DataTableRowActionsProps {
-//     row: Row<TaskType>;
-// }
 
 export function DeleteMemberDialog({ member }: { member?: MemberType }) {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -28,24 +13,32 @@ export function DeleteMemberDialog({ member }: { member?: MemberType }) {
     const queryClient = useQueryClient();
     const workspaceId = useWorkspaceId();
 
-    // const { mutate, isPending } = useMutation({
-    //     mutationFn: deleteMemberMutationFn,
-    // });
+    const { mutate, isPending } = useMutation({
+        mutationFn: deleteMemberMutationFn,
+    });
+
+    // console.log(
+    //     queryClient.getQueryCache().getAll().map(query => query.queryKey)
+    // );
+    
 
     const handleConfirm = () => {
-        // mutate(
-        //     { workspaceId, taskId: task._id },
-        //     {
-        //         onSuccess: (data) => {
-        //             queryClient.invalidateQueries({ queryKey: ["all-tasks", workspaceId] });
-        //             toast({ title: "Success", description: data.message, variant: "success" });
-        //             setOpenDeleteDialog(false);
-        //         },
-        //         onError: (error) => {
-        //             toast({ title: "Error", description: error.message, variant: "destructive" });
-        //         },
-        //     }
-        // );
+        if (!member?._id) return;
+        mutate(
+            { workspaceId, memberId: member?._id as string},
+            {
+                onSuccess: (data) => {
+                    // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
+                    queryClient.invalidateQueries({ queryKey: ["workspace", workspaceId] });
+
+                    toast({ title: "Success", description: data.message, variant: "success" });
+                    setOpenDeleteDialog(false);
+                },
+                onError: (error) => {
+                    toast({ title: "Error", description: error.message, variant: "destructive" });
+                },
+            }
+        );
     };
 
     return (
@@ -58,7 +51,7 @@ export function DeleteMemberDialog({ member }: { member?: MemberType }) {
             {/* Confirm Delete Dialog */}
             <ConfirmDialog
                 isOpen={openDeleteDialog}
-                isLoading={false}
+                isLoading={isPending}
                 onClose={() => setOpenDeleteDialog(false)}
                 onConfirm={handleConfirm}
                 title="Remove Member"
