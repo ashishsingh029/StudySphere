@@ -266,3 +266,18 @@ export type AllTaskResponseType = {
   tasks: TaskType[];
   pagination: PaginationType;
 };
+
+export type EditTaskPayloadType = {
+  taskId: string;
+  projectId: string;
+  workspaceId: string;
+  data: Partial<{
+    title: string;
+    description: string | null | undefined;
+    priority: string;
+    status: string;
+    assignedTo: string;
+    dueDate: string;
+  }>;
+};
+

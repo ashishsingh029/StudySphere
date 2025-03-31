@@ -17,14 +17,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { deleteTaskMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import { useParams } from "react-router-dom";
+import { Dialog, DialogTitle, DialogContent, DialogDescription } from "@/components/ui/dialog";
+import EditTaskForm from "../edit-task-form";
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const [openDeleteDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
 
@@ -32,38 +36,19 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     mutationFn: deleteTaskMutationFn,
   });
 
-  const param = useParams();
-  const projectId = param.projectId as string
-  console.log(projectId)
-  
-  const taskId = row.original._id as string;
-  const taskCode = row.original.taskCode;
-  console.log(taskId)
+  const task = row.original;
 
   const handleConfirm = () => {
     mutate(
-      {
-        workspaceId,
-        taskId,
-      },
+      { workspaceId, taskId: task._id },
       {
         onSuccess: (data) => {
-          queryClient.invalidateQueries({
-            queryKey: ["all-tasks", workspaceId],
-          });
-          toast({
-            title: "Success",
-            description: data.message,
-            variant: "success",
-          });
-          setTimeout(() => setOpenDialog(false), 100);
+          queryClient.invalidateQueries({ queryKey: ["all-tasks", workspaceId] });
+          toast({ title: "Success", description: data.message, variant: "success" });
+          setOpenDeleteDialog(false);
         },
         onError: (error) => {
-          toast({
-            title: "Error",
-            description: error.message,
-            variant: "destructive",
-          });
+          toast({ title: "Error", description: error.message, variant: "destructive" });
         },
       }
     );
@@ -73,22 +58,19 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-          >
+          <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
             <MoreHorizontal />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem onClick={() => setIsEditOpen(true)} className="cursor-pointer">
             Edit Task
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className={`!text-destructive cursor-pointer ${taskId}`}
-            onClick={() => setOpenDialog(true)}
+            className="!text-destructive cursor-pointer"
+            onClick={() => setOpenDeleteDialog(true)}
           >
             Delete Task
             <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
@@ -96,13 +78,25 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {/* Edit Task Dialog */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="sm:max-w-lg max-h-auto my-5 border-0">
+          <DialogTitle className="sr-only">Edit Task</DialogTitle>
+          <DialogDescription>
+            Update the details of your task to keep the project organized.
+          </DialogDescription>
+          <EditTaskForm task={task} onClose={() => setIsEditOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm Delete Dialog */}
       <ConfirmDialog
         isOpen={openDeleteDialog}
         isLoading={isPending}
-        onClose={() => setOpenDialog(false)}
+        onClose={() => setOpenDeleteDialog(false)}
         onConfirm={handleConfirm}
         title="Delete Task"
-        description={`Are you sure you want to delete ${taskCode}`}
+        description={`Are you sure you want to delete ${task.taskCode}?`}
         confirmText="Delete"
         cancelText="Cancel"
       />
