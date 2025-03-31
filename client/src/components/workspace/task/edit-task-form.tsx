@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,44 +24,34 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { editTaskMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import { Loader } from "lucide-react";
+import { CalendarIcon, Loader } from "lucide-react";
 import { TaskType } from "@/types/api.type";
 import useGetWorkspaceMembers from "@/hooks/api/use-get-workspace-members";
 import { useAuthContext } from "@/context/auth-provider";
+import { Popover, PopoverContent } from "@/components/ui/popover";
+import { PopoverTrigger } from "@radix-ui/react-popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
 
 export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClose: () => void; }) {
 
-    const [canEdit, setCanEdit] = useState(true);
     const workspaceId = useWorkspaceId();
     const queryClient = useQueryClient();
-    const {user} = useAuthContext();
+    const { user } = useAuthContext();
 
     const { data } = useGetWorkspaceMembers(workspaceId);
     const members = data?.members || [];
     const memberRole = members.find((member) => member.userId._id == user?._id)
 
-    useEffect(() => {
-        if(task?.assignedTo?._id == memberRole?.userId._id){
-            setCanEdit(false)
-        }
-    }, [])
-    
-
-    if(task?.assignedTo == memberRole?._id){
-        console.log(task?.assignedTo);
-        console.log(memberRole?._id);
-        
-        
-        setCanEdit(true)
-    }
-
+    const canEdit = task?.assignedTo?._id != memberRole?.userId._id && memberRole?.role.name == "MEMBER";
 
     const formSchema = z.object({
         title: z.string().trim().min(1, { message: "Task title is required" }),
         description: z.string().trim().optional(),
         status: z.string().min(1, { message: "Status is required" }),
         priority: z.string().min(1, { message: "Priority is required" }),
-        dueDate: z.string().min(1, { message: "Due date is required" }),
+        dueDate: z.date({ required_error: "Due date is required" }),
     });
 
     const { mutate, isPending } = useMutation({ mutationFn: editTaskMutationFn });
@@ -73,7 +63,7 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
             description: task?.description || "",
             status: task?.status || "",
             priority: task?.priority || "",
-            dueDate: task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
+            dueDate: task?.dueDate ? new Date(task.dueDate) : undefined,
         },
     });
 
@@ -84,7 +74,7 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
                 description: task.description || "",
                 status: task.status || "",
                 priority: task.priority || "",
-                dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
+                dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
             });
         }
     }, [task]);
@@ -98,7 +88,7 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
             workspaceId,
             data: {
                 ...values,
-                dueDate: values.dueDate ? new Date(values.dueDate).toISOString() : undefined,
+                dueDate: values.dueDate ? new Date(values.dueDate).toISOString() : "",
             },
         };
 
@@ -128,46 +118,85 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
                 </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className="mb-4">
+                        <div>
                             <FormField
                                 control={form.control}
                                 name="title"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="title">Task Title</FormLabel>
-                                        <FormControl><Input id="title" placeholder="Task title" {...field} disabled={memberRole?.role.name != "OWNER"} /></FormControl>
+                                        <FormLabel htmlFor="title" className="dark:text-[#f1f7feb5] text-sm">Task Title</FormLabel>
+                                        <FormControl>
+                                            <Input id="title" placeholder="Task title" {...field} disabled={memberRole?.role.name == "MEMBER"} />
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         </div>
-                        <div className="mb-4">
+                        <div>
                             <FormField
                                 control={form.control}
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel htmlFor="description">Task Description</FormLabel>
-                                        <FormControl><Textarea id="description" rows={4} placeholder="Task description" {...field} disabled={memberRole?.role.name !== "OWNER"} /></FormControl>
+                                        <FormLabel htmlFor="description" className="dark:text-[#f1f7feb5] text-sm">Task Description</FormLabel>
+                                        <FormControl>
+                                            <Textarea id="description" rows={4} placeholder="Task description" {...field} disabled={memberRole?.role.name == "MEMBER"} />
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         </div>
-                        <div className="mb-4">
+                        <div className="!mt-2">
                             <FormField
                                 control={form.control}
                                 name="dueDate"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel htmlFor="dueDate">Due Date</FormLabel>
-                                        <FormControl><Input id="dueDate" type="date" {...field} disabled={memberRole?.role.name !== "OWNER"} /></FormControl>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant={"outline"}
+                                                        className={cn(
+                                                            "w-full flex-1 pl-3 text-left font-normal",
+                                                            !field.value && "text-muted-foreground"
+                                                        )}
+                                                        disabled={memberRole?.role.name == "MEMBER"}
+                                                    >
+                                                        {field.value ? (
+                                                            format(field.value, "PPP")
+                                                        ) : (
+                                                            <span>Pick a date</span>
+                                                        )}
+                                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0" align="start">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={field.value}
+                                                    onSelect={field.onChange}
+                                                    disabled={
+                                                        (date) =>
+                                                            date < new Date(new Date().setHours(0, 0, 0, 0)) ||
+                                                            date > new Date("2100-12-31")
+                                                    }
+                                                    initialFocus
+                                                    defaultMonth={new Date()}
+                                                    fromMonth={new Date()}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         </div>
-                        <div className="mb-4">
+                        <div className="mt2">
                             <FormField
                                 control={form.control}
                                 name="status"
@@ -198,7 +227,7 @@ export default function EditTaskForm({ task, onClose }: { task?: TaskType; onClo
                                     <FormItem>
                                         <FormLabel htmlFor="priority">Priority</FormLabel>
                                         <FormControl>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={memberRole?.role.name !== "OWNER"}>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={memberRole?.role.name == "MEMBER"}>
                                                 <SelectTrigger id="priority">
                                                     <SelectValue placeholder="Select Priority" />
                                                 </SelectTrigger>

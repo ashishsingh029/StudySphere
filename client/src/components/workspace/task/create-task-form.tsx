@@ -122,7 +122,7 @@ export default function CreateTaskForm(props: {
       message: "AssignedTo is required",
     }),
     dueDate: z.date({
-      required_error: "A date of birth is required.",
+      required_error: "A due date is required.",
     }),
   });
 
@@ -231,7 +231,7 @@ export default function CreateTaskForm(props: {
                       </span>
                     </FormLabel>
                     <FormControl>
-                      <Textarea rows={1} placeholder="Description" {...field} />
+                      <Textarea rows={4} placeholder="Description" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
