@@ -8,7 +8,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
@@ -31,6 +30,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
 
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
+  // const param = useParams();
+  // const projectId = param.projectId as string;
+  // const taskId = row.original._id as string;
+  // const taskCode = row.original.taskCode;
 
   const { mutate, isPending } = useMutation({
     mutationFn: deleteTaskMutationFn,
@@ -67,13 +70,13 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuItem onClick={() => setIsEditOpen(true)} className="cursor-pointer">
             Edit Task
           </DropdownMenuItem>
+
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="!text-destructive cursor-pointer"
             onClick={() => setOpenDeleteDialog(true)}
           >
             Delete Task
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -100,6 +103,8 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         confirmText="Delete"
         cancelText="Cancel"
       />
+
+      {/* Edit Task Dialog */}
     </>
   );
 }
