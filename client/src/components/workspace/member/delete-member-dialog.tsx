@@ -11,7 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
-import { Member, TaskType } from "@/types/api.type";
+import { Member, MemberType, TaskType } from "@/types/api.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { deleteTaskMutationFn } from "@/lib/api";
@@ -22,7 +22,7 @@ import { Dialog, DialogTitle, DialogContent, DialogDescription } from "@/compone
 //     row: Row<TaskType>;
 // }
 
-export function DeleteMemberDialog({ member }: { member?: any }) {
+export function DeleteMemberDialog({ member }: { member?: MemberType }) {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
     const queryClient = useQueryClient();

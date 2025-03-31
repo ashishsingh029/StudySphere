@@ -104,7 +104,6 @@ export type ChangeWorkspaceMemberRoleType = {
 };
 
 export type MemberType = {
-  member: {
     _id: string;
     userId: {
         _id: string;
@@ -119,7 +118,6 @@ export type MemberType = {
     };
     joinedAt: string;
     createdAt: string;
-  }
 }
 
 export type AllMembersInWorkspaceResponseType = {
