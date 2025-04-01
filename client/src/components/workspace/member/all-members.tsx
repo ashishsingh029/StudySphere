@@ -77,10 +77,10 @@ const AllMembers = () => {
         const avatarColor = getAvatarColor(name);
 
         const canDelete =
-  (currentUserRole === "OWNER" && member.role.name !== "OWNER") ||
-  (currentUserRole === "ADMIN" &&
-    member.role.name === "MEMBER" &&
-    member.userId._id !== user?._id); 
+          (currentUserRole === "OWNER" && member.role.name !== "OWNER") || 
+          (currentUserRole === "ADMIN" && member.role.name === "MEMBER") ||
+          (currentUserRole !== "OWNER" && member.userId._id === user?._id); 
+
 
         return (
           <div key={member.userId._id} className="flex items-center justify-between space-x-4">
