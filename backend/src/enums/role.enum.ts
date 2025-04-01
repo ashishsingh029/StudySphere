@@ -25,6 +25,8 @@ export const Permissions = {
   DELETE_TASK: "DELETE_TASK",
 
   VIEW_ONLY: "VIEW_ONLY",
+
+  DELETE_MESSAGE: "DELETE_MESSAGE",
 } as const;
 
 export type PermissionType = keyof typeof Permissions;
