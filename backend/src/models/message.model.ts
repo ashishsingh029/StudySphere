@@ -26,5 +26,7 @@ const messageSchema = new Schema<MessageDocument>(
   },
   { timestamps: true }
 );
-const MessageModel = mongoose.model<MessageDocument>("Member", messageSchema);
+const MessageModel =
+  mongoose.models.Message ||
+  mongoose.model<MessageDocument>("Message", messageSchema);
 export default MessageModel;

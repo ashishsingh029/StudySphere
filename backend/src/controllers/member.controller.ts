@@ -4,7 +4,7 @@ import { z } from "zod";
 import { HTTPSTATUS } from "../config/http.config";
 import { getMemberRoleInWorkspace, joinWorkspaceByInviteService, removeMemberFromWorkspaceServive } from "../services/member.service";
 import { roleGuard } from "../utils/roleGuard";
-import { Permissions, Roles } from "../enums/role.enum";
+import { Permissions } from "../enums/role.enum";
 
 export const joinWorkspaceController = asyncHandler(
   async (req: Request, res: Response) => {

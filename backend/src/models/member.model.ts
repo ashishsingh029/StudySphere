@@ -35,5 +35,5 @@ const memberSchema = new Schema<MemberDocument>(
   }
 );
 
-const MemberModel = mongoose.model<MemberDocument>("Member", memberSchema);
+const MemberModel = mongoose.models.Member || mongoose.model<MemberDocument>("Member", memberSchema);
 export default MemberModel;
