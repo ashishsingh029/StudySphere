@@ -7,6 +7,7 @@ export const getMessagesByWorkspaceIdService = async (workspaceId: string) => {
 export const sendMessageByUserService = async (
   senderId: string,
   workspaceId: string,
+  senderName: string | undefined,
   text?: string,
   file?: string
 ) => {
@@ -20,6 +21,7 @@ export const sendMessageByUserService = async (
   const newMessage = new MessageModel({
     senderId,
     workspaceId,
+    senderName,
     text,
     file: fileUrl,
   });

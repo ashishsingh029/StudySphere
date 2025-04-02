@@ -16,10 +16,9 @@ import memberRoutes from "./routes/member.route";
 import projectRoutes from "./routes/project.route";
 import taskRoutes from "./routes/task.route";
 import messageRoutes from "./routes/message.route";
-
-const app = express();
+import { app, server } from "./config/socket.config"
 const BASE_PATH = config.BASE_PATH;
-// ✅ Increase request size limit (Fix for "PayloadTooLargeError")
+// Increased request size limit (Fix for "PayloadTooLargeError")
 app.use(bodyParser.json({ limit: "10mb" })); 
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true })); 
 app.use(express.json());
@@ -59,7 +58,7 @@ app.use(`${BASE_PATH}/chat`, isAuthenticated, messageRoutes);
 
 app.use(errorHandler);
 
-app.listen(config.PORT, async () => {
+server.listen(config.PORT, async () => {
   console.log(`Server listening on port ${config.PORT} in ${config.NODE_ENV}`);
   await connectDatabase();
 });

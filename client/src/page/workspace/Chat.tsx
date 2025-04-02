@@ -1,25 +1,33 @@
+import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import ChatHeader from "@/components/workspace/Chat/chat-header";
+// import ChatHeader from "@/components/workspace/Chat/chat-header";
 import ChatContent from "@/components/workspace/Chat/chat-content";
 import ChatFooter from "@/components/workspace/Chat/chat-footer";
 import { ChatSkeleton } from "@/components/skeleton-loaders/chat-skeleton";
-import { useState } from "react";
-// import { useChatStore } from "@/store/use-chat-store";
+import { useChatStore } from "@/store/use-chat-store";
+import useWorkspaceId from "@/hooks/use-workspace-id";
+// import chatbgImage from "../../assets/chatbg.jpg";
 
 const Chat = () => {
-  const [isLoading,setIsLoading] = useState(false)
-  
+  const { isMessagesLoading, getMessages } = useChatStore();
+  const workspaceId = useWorkspaceId();
+
+  useEffect(() => {
+    if (workspaceId) {
+      getMessages(workspaceId);
+    }
+  }, [workspaceId]);
+
   return (
     <Card className="flex flex-1 flex-col md:pt-3 h-[calc(88vh)]">
-      {isLoading ? <>
-        <ChatSkeleton/>
-      </>:    
-      <>
-        {/* <ChatHeader /> */}
-        <ChatContent />
-        <ChatFooter />
-      </>}
-      
+      {isMessagesLoading ? (
+        <ChatSkeleton />
+      ) : (
+        <>
+          <ChatContent />
+          <ChatFooter />
+        </>
+      )}
     </Card>
   );
 };

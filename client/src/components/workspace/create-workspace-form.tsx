@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import workspaceImage from "../../assets/workspace.jpg";
 import { z } from "zod";
 import {
   Form,
@@ -151,9 +152,8 @@ export default function CreateWorkspaceForm({
         </Form>
       </div>
       <div
-        className="relative flex-1 shrink-0 hidden bg-muted md:block
-      bg-[url('/images/workspace.jpg')] bg-cover bg-center h-full
-      "
+        className="relative flex-1 shrink-0 hidden bg-muted md:block bg-cover bg-center h-full"
+        style={{ backgroundImage: `url(${workspaceImage})` }}
       />
     </main>
   );

@@ -9,7 +9,11 @@ import { toast } from "@/hooks/use-toast";
 
 const ChatFooter = () => {
   const [input, setInput] = useState("");
-  const [selectedFile, setSelectedFile] = useState<{ name: string; preview: string } | null>(null);
+  const [isSendingMessage, setIsSendingMesage] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<{
+    name: string;
+    preview: string;
+  } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { sendMessage } = useChatStore();
   const workspaceId = useWorkspaceId();
@@ -51,11 +55,14 @@ const ChatFooter = () => {
     };
 
     try {
+      setIsSendingMesage(true);
       await sendMessage(messageData, workspaceId);
       setInput("");
       removeSelectedFile();
     } catch (error) {
       console.error("Failed to send message:", error);
+    } finally {
+      setIsSendingMesage(false);
     }
   };
 
@@ -80,16 +87,18 @@ const ChatFooter = () => {
       )}
 
       {/* Chat Input Form */}
-      <form onSubmit={handleSendMessage} className="flex w-full items-center space-x-2">
+      <form
+        onSubmit={handleSendMessage}
+        className="flex w-full items-center space-x-2"
+      >
         <Input
           id="message"
           placeholder="Type your message..."
-          className="flex-1 bg-slate-200"
+          className="flex-1 bg-slate-200 border-none hover:shadow-blue-400"
           autoComplete="off"
           value={input}
           onChange={(event) => setInput(event.target.value)}
         />
-
         <input
           type="file"
           className="hidden"
@@ -102,6 +111,7 @@ const ChatFooter = () => {
           size="icon"
           className="bg-gray-400"
           onClick={() => fileInputRef.current?.click()}
+          disabled={isSendingMessage}
         >
           <Paperclip className="size-5" />
         </Button>
@@ -110,7 +120,7 @@ const ChatFooter = () => {
           type="submit"
           size="icon"
           className="bg-blue-600"
-          disabled={inputLength === 0 && !selectedFile}
+          disabled={isSendingMessage || (inputLength === 0 && !selectedFile)}
         >
           <Send className="size-5" />
         </Button>
