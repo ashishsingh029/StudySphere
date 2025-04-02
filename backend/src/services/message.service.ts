@@ -26,3 +26,6 @@ export const sendMessageByUserService = async (
   await newMessage.save();
   return newMessage;
 };
+export const deleteAllMessagesInWorkspaceService = async (workspaceId: string) => {
+  await MessageModel.deleteMany({ workspaceId });
+}
