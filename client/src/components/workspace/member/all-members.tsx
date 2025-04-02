@@ -98,7 +98,7 @@ const AllMembers = () => {
               {/* Show delete button only if user has permission */}
               {canDelete && <DeleteMemberDialog member={member} />}
 
-              {/* Role Change Button (Unchanged) */}
+              {/* Role Change Button */}
               <Popover>
                 <PopoverTrigger asChild>
                   <Button

@@ -284,3 +284,33 @@ export const editTaskMutationFn = async({
   );
   return response.data;
 };
+
+
+
+
+//*******CHAT ********************************
+//************************* */
+
+export const getMessageByIdQueryFn = async({
+  workspaceId,
+}: {
+  workspaceId: string;
+}): Promise<{
+  message: string;
+}> => {
+  const response = await API.get(`workspace/${workspaceId}/chat`);
+  return response.data
+} 
+
+export const postMessageByIdQueryFn = async({
+  workspaceId,
+  message
+}: {
+  workspaceId: string;
+  message:string[]
+}): Promise<{
+  message: string;
+}> => {
+  const response = await API.post(`workspace/${workspaceId}/chat`,{message});
+  return response.data
+} 

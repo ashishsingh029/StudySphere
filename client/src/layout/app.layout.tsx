@@ -15,7 +15,7 @@ const AppLayout = () => {
           <div className="w-full">
             <>
               <Header />
-              <div className="px-3 lg:px-20 py-3">
+              <div className="px-4 pt-3">
                 <Outlet />
               </div>
             </>

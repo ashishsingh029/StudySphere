@@ -22,6 +22,7 @@ const Header = () => {
     if (pathname.includes("/settings")) return "Settings";
     if (pathname.includes("/tasks")) return "Tasks";
     if (pathname.includes("/members")) return "Members";
+    if(pathname.includes("/chat")) return "Chat"
     return null; // Default label
   };
 
