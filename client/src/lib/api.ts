@@ -298,7 +298,7 @@ export const getMessageByIdQueryFn = async({
 }): Promise<{
   message: string;
 }> => {
-  const response = await API.get(`workspace/${workspaceId}/chat`);
+  const response = await API.get(`chat/workspace/${workspaceId}/`);
   return response.data
 } 
 
@@ -311,6 +311,6 @@ export const postMessageByIdQueryFn = async({
 }): Promise<{
   message: string;
 }> => {
-  const response = await API.post(`workspace/${workspaceId}/chat`,{message});
+  const response = await API.post(`chat/workspace/${workspaceId}`,{message});
   return response.data
 } 
