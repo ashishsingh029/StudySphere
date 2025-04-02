@@ -220,13 +220,16 @@ export const createTaskMutationFn = async ({
   return response.data;
 };
 
-export const getTaskByIdQueryFn = async({
-  workspaceId, projectId, taskId
-}:EditTaskPayloadType) => {
-  const response = await API.get(`task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`);
+export const getTaskByIdQueryFn = async ({
+  workspaceId,
+  projectId,
+  taskId,
+}: EditTaskPayloadType) => {
+  const response = await API.get(
+    `task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`
+  );
   console.log(response);
-}
- 
+};
 
 export const getAllTasksQueryFn = async ({
   workspaceId,
@@ -271,46 +274,47 @@ export const deleteTaskMutationFn = async ({
   return response.data;
 };
 
-export const editTaskMutationFn = async({
+export const editTaskMutationFn = async ({
   taskId,
   projectId,
   workspaceId,
   data,
-} : EditTaskPayloadType): Promise<{
+}: EditTaskPayloadType): Promise<{
   message: string;
 }> => {
   const response = await API.put(
-    `task/${taskId}/project/${projectId}/workspace/${workspaceId}/update`,data
+    `task/${taskId}/project/${projectId}/workspace/${workspaceId}/update`,
+    data
   );
   return response.data;
 };
 
-
-
-
 //*******CHAT ********************************
 //************************* */
 
-export const getMessageByIdQueryFn = async({
+export const getMessagesByWorkspaceIdQueryFn = async ({
   workspaceId,
 }: {
   workspaceId: string;
 }): Promise<{
-  message: string;
+  message?: { text: string; file: string };
 }> => {
   const response = await API.get(`chat/workspace/${workspaceId}/`);
-  return response.data
-} 
+  return response.data;
+};
 
-export const postMessageByIdQueryFn = async({
+export const sendMessageInWorkspaceQueryFn = async ({
   workspaceId,
-  message
+  message,
 }: {
   workspaceId: string;
-  message:string[]
+  message?: { text: string; file: any };
 }): Promise<{
   message: string;
 }> => {
-  const response = await API.post(`chat/workspace/${workspaceId}`,{message});
-  return response.data
-} 
+  const response = await API.post(`chat/workspace/${workspaceId}`, {
+    text: message?.text,
+    file: message?.file,
+  });
+  return response.data;
+};

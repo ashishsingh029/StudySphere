@@ -4,18 +4,18 @@ import ChatContent from "@/components/workspace/Chat/chat-content";
 import ChatFooter from "@/components/workspace/Chat/chat-footer";
 import { ChatSkeleton } from "@/components/skeleton-loaders/chat-skeleton";
 import { useState } from "react";
+// import { useChatStore } from "@/store/use-chat-store";
 
 const Chat = () => {
   const [isLoading,setIsLoading] = useState(false)
+  
   return (
     <Card className="flex flex-1 flex-col md:pt-3 h-[calc(88vh)]">
       {isLoading ? <>
-        <ChatHeader />
-        <ChatSkeleton/>
         <ChatSkeleton/>
       </>:    
       <>
-        <ChatHeader />
+        {/* <ChatHeader /> */}
         <ChatContent />
         <ChatFooter />
       </>}

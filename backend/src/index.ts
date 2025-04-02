@@ -5,7 +5,7 @@ import session from "express-session";
 import { config } from "./config/app.config";
 import connectDatabase from "./config/database.config";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
-
+import bodyParser from "body-parser"
 import "./config/passport.config";
 import passport from "passport";
 import authRoutes from "./routes/auth.route";
@@ -19,11 +19,11 @@ import messageRoutes from "./routes/message.route";
 
 const app = express();
 const BASE_PATH = config.BASE_PATH;
-
+// ✅ Increase request size limit (Fix for "PayloadTooLargeError")
+app.use(bodyParser.json({ limit: "10mb" })); 
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true })); 
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
   cors({
     origin: config.FRONTEND_ORIGIN,

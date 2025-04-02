@@ -8,10 +8,10 @@ export const sendMessageByUserService = async (
   senderId: string,
   workspaceId: string,
   text?: string,
-  file?: any
+  file?: string
 ) => {
   let fileUrl;
-  console.log("Received file: ", file);
+  // console.log("Received file: ", file);
   if (file) {
     // Upload base64 image to cloudinary
     const uploadResponse = await cloudinary.uploader.upload(file);

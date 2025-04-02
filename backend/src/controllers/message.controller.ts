@@ -19,7 +19,7 @@ export const getMessages = asyncHandler(async (req: Request, res: Response) => {
 export const sendMessage = asyncHandler(async (req: Request, res: Response) => {
   const workspaceId = z.string().parse(req.params.workspaceId);
   const userId = req.user?._id;
-  console.log("Req.body = ", req.body)
+  // console.log("Req.body = ", req.body)
   let { text, file } = req.body
   let { role } = await getMemberRoleInWorkspace(userId, workspaceId)
   roleGuard(role , [Permissions.VIEW_ONLY])

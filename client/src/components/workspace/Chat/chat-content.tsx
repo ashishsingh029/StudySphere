@@ -1,67 +1,130 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { CardContent } from "@/components/ui/card"
-import { useState } from "react";
+import { useChatStore } from "@/store/use-chat-store";
+import { useEffect, useRef } from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { CardContent } from "@/components/ui/card";
+import useWorkspaceId from "@/hooks/use-workspace-id";
+import { useAuthContext } from "@/context/auth-provider";
+import { formatMessageTime } from "@/lib/dateFormatter";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
+// Helper Functions
+const getFileExtension = (url: string) => url.split(".").pop()?.toLowerCase() || "";
+
+const isImage = (url: string) => {
+  const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+  return imageExtensions.includes(getFileExtension(url));
+};
+
+const generateRandomFileName = (extension: string) => {
+  const randomString = Math.random().toString(36).substring(3, 15); // 10-12 chars
+  return `${randomString}.${extension}`;
+};
 
 const ChatContent = () => {
-    const [messages, setMessages] = useState([
-        { role: "agent", sender: "Toby", content: "Hey! How are you doing?", time: "09:25 AM" },
-        { role: "user", sender: "You", content: "I'm doing great! Just finished working on that new feature we discussed.", time: "09:27 AM" },
-        { role: "agent", sender: "Toby", content: "That's awesome! Can't wait to see it. When do you think it'll be ready for review?", time: "09:28 AM" },
-        { role: "user", sender: "You", content: "I'm just running some final tests. Should be ready in about an hour!", time: "09:30 AM" },
-        { role: "agent", sender: "Toby", content: "Perfect! I'll check it out once it's ready. Is there anything specific you'd like me to focus on during the review?", time: "09:32 AM" }
-      ]);
-  return (
-       <CardContent className="flex-1 overflow-y-auto">
-        <div className="space-y-4">
-          {messages.map((message:any, index:number) => (
-            <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} items-start`}>
-              {/* Avatar on the left for received messages, on the right for sent messages */}
-              {message.role !== "user" && (
-                <Avatar className="size-8 mr-3">
-                  <AvatarFallback>T</AvatarFallback>
-                </Avatar>
-              )}
+  const { messages, getMessages } = useChatStore();
+  const { user } = useAuthContext();
+  const workspaceId = useWorkspaceId();
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
 
-              {/* Message Content */}
-              <div className="flex flex-col max-w-[75%]">
-                {message.role === "user" ?
-                <>
-                <p className={"font-semibold text-[0.62rem] text-right text-red-500"}>
-                  {message.sender}
-                </p>
-                <div className={"px-4 py-2  rounded-l-lg rounded-br-2xl text-[0.7rem] bg-gray-500 text-primary-foreground"}>
-                  <p>{message.content}</p>
-                </div>
-                <p className={"text-[0.6rem] text-gray-600 mt-1 text-right"}>
-                  {message.time}
-                </p>
-                </> : 
-                
-                <>
-                <p className={"font-semibold text-[0.62rem] text-blue-500"}>
-                  {message.sender}
-                </p>
-                <div className={"px-4 py-2  rounded-r-lg rounded-bl-2xl text-[0.7rem] bg-muted"}>
-                  <p>{message.content}</p>
-                </div>
-                <p className={"text-[0.6rem] text-gray-600 mt-1 text-left"}>
-                  {message.time}
-                </p>
-                </>}
-                
-              </div>
+  useEffect(() => {
+    if (workspaceId) getMessages(workspaceId);
+  }, [workspaceId, getMessages]);
 
-              {message.role === "user" && (
-                <Avatar className="size-8 ml-3">
-                  <AvatarFallback>Y</AvatarFallback>
-                </Avatar>
-              )}
-            </div>
-          ))}
-        </div>
+  useEffect(() => {
+    if (messageEndRef.current && messages.length > 0) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  if (!messages) {
+    return (
+      <CardContent className="flex-1 overflow-y-auto p-4 text-2xl">
+        No messages available.
       </CardContent>
-  )
-}
+    );
+  }
 
-export default ChatContent
+  return (
+    <CardContent className="flex-1 overflow-y-auto space-y-4">
+      {messages.map((message, index: number) => {
+        const isCurrentUser = message.senderId === user?._id;
+
+        return (
+          <div
+            key={index}
+            className={`flex items-start ${isCurrentUser ? "justify-end" : "justify-start"}`}
+            ref={messageEndRef}
+          >
+            {/* Avatar */}
+            {!isCurrentUser && (
+              <Avatar className="size-8 mr-3">
+                <AvatarFallback>{message.senderId.charAt(0).toUpperCase()}</AvatarFallback>
+              </Avatar>
+            )}
+
+            {/* Message Box */}
+            <div className="flex flex-col max-w-[75%]">
+              <p className={`font-semibold text-[0.62rem] ${isCurrentUser ? "text-right text-red-600" : "text-left text-blue-500"}`}>
+                {isCurrentUser ? "You" : message.senderId}
+              </p>
+
+              {/* File Handling */}
+              {message.file && (
+                <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md w-fit">
+                  {isImage(message.file) ? (
+                    <a
+                      href={message.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      className="cursor-pointer hover:opacity-80 transition-opacity"
+                    >
+                      <img src={message.file} alt="Attachment" className="sm:max-w-[200px] rounded-md" />
+                    </a>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <span className="bg-gray-200 px-3 py-1 rounded-md text-gray-700">
+                        {generateRandomFileName(getFileExtension(message.file))}
+                      </span>
+                      <a href={message.file} target="_blank" rel="noopener noreferrer" download>
+                        <Button variant="destructive" size="sm" className="size-8">
+                          <Download className="size-1" />
+                        </Button>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Text Message */}
+              {message.text && (
+                <div
+                  className={`px-4 py-2 text-sm ${
+                    isCurrentUser ? "bg-gray-500 text-white rounded-l-lg rounded-br-2xl" : "bg-purple-200 text-black rounded-r-lg rounded-bl-2xl"
+                  }`}
+                >
+                  <p>{message.text}</p>
+                </div>
+              )}
+
+              {/* Timestamp */}
+              <p className={`text-[0.6rem] text-gray-600 mt-1 ${isCurrentUser ? "text-right" : "text-left"}`}>
+                {formatMessageTime(message.createdAt)}
+              </p>
+            </div>
+
+            {/* Avatar for Current User */}
+            {isCurrentUser && (
+              <Avatar className="size-8 ml-3">
+                <AvatarFallback>U</AvatarFallback>
+              </Avatar>
+            )}
+          </div>
+        );
+      })}
+    </CardContent>
+  );
+};
+
+export default ChatContent;
