@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, MessageCircle, ArrowRight } from "lucide-react";
+import { Send, ArrowRight } from "lucide-react";
 import { getGeminiResponse } from "@/lib/gemini-service";
 import profanity from "@devshubham/clean-speech-hindi";
 import { Card } from "@/components/ui/card";

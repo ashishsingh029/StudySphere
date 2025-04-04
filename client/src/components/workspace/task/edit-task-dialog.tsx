@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 // import CreateTaskForm from "./create-task-form";
 
-const EditTaskDialog = (props: { projectId?: string,taskId?: string }) => {
+const EditTaskDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // const { data, isPending, isError } = useQuery({
@@ -19,9 +19,9 @@ const EditTaskDialog = (props: { projectId?: string,taskId?: string }) => {
   //   placeholderData: keepPreviousData,
   // });
 
-  const onClose = () => {
-    setIsOpen(false);
-  };
+  // const onClose = () => {
+  //   setIsOpen(false);
+  // };
   return (
     <div>
       <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
