@@ -74,7 +74,7 @@ const ChatContent = () => {
                         </a>
                       ) : (
                         <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md">
-                          <span className="bg-gray-200 px-3 py-1 rounded-md text-sm text-gray-700 max-w-fit">
+                          <span className="bg-gray-200 px-3 py-1 rounded-md text-sm text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
                             {
                              message.fileName
                             }
@@ -139,7 +139,7 @@ const ChatContent = () => {
                         </a>
                       ) : (
                         <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md">
-                          <span className="bg-gray-200 px-3 py-1 rounded-md text-gray-700 text-sm max-w-fit">
+                          <span className="bg-gray-200 px-3 py-1 rounded-md text-gray-700 text-sm whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
                             {
                               message.fileName
                             }
