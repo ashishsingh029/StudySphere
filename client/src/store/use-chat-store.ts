@@ -8,6 +8,7 @@ interface Message {
   senderName: string;
   senderId: string;
   workspaceId: string;
+  fileName?: string;
 }
 
 interface ChatState {

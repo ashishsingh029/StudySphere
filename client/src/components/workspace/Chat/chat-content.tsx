@@ -16,11 +16,6 @@ const isImage = (url: string) => {
   return imageExtensions.includes(getFileExtension(url));
 };
 
-const generateRandomFileName = (extension: string) => {
-  const randomString = Math.random().toString(36).substring(3, 15); // 10-12 chars
-  return `${randomString}.${extension}`;
-};
-
 const ChatContent = () => {
   const { messages } = useChatStore();
   const { user } = useAuthContext();
@@ -31,7 +26,7 @@ const ChatContent = () => {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-
+  console.log(messages)
   return (
     <CardContent className="flex-1 overflow-y-auto space-y-4 h-[calc(80vh)]">
       {messages.map((message, index: number) => {
@@ -79,11 +74,11 @@ const ChatContent = () => {
                           />
                         </a>
                       ) : (
-                        <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md w-fit">
-                          <span className="bg-gray-200 px-3 py-1 rounded-md text-sm text-gray-700">
-                            {generateRandomFileName(
-                              getFileExtension(message.file)
-                            )}
+                        <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md">
+                          <span className="bg-gray-200 px-3 py-1 rounded-md text-sm text-gray-700 max-w-fit">
+                            {
+                             message.fileName
+                            }
                           </span>
                           <a
                             href={message.file}
@@ -144,11 +139,11 @@ const ChatContent = () => {
                           />
                         </a>
                       ) : (
-                        <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md w-fit">
-                          <span className="bg-gray-200 px-3 py-1 rounded-md text-gray-700 text-sm">
-                            {generateRandomFileName(
-                              getFileExtension(message.file)
-                            )}
+                        <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md">
+                          <span className="bg-gray-200 px-3 py-1 rounded-md text-gray-700 text-sm max-w-fit">
+                            {
+                              message.fileName
+                            }
                           </span>
                           <a
                             href={message.file}

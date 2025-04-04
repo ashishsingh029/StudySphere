@@ -9,7 +9,8 @@ export const sendMessageByUserService = async (
   workspaceId: string,
   senderName: string | undefined,
   text?: string,
-  file?: string
+  file?: string,
+  filename?: string
 ) => {
   let fileUrl;
   // console.log("Received file: ", file);
@@ -24,6 +25,7 @@ export const sendMessageByUserService = async (
     senderName,
     text,
     file: fileUrl,
+    fileName: filename
   });
   await newMessage.save();
   return newMessage;

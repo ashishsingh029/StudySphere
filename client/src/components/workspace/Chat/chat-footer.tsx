@@ -51,7 +51,8 @@ const ChatFooter = () => {
 
     const messageData = {
       text: input,
-      file: selectedFile?.preview || null,
+      file: selectedFile?.preview || undefined,
+      filename: selectedFile?.name || undefined,
     };
 
     try {
@@ -94,12 +95,12 @@ const ChatFooter = () => {
         <Input
           id="message"
           placeholder="Type your message..."
-          className="flex-1 bg-slate-200 border-none hover:shadow-blue-400"
+          className="flex-1 bg-slate-200 border-none hover:shadow-blue-400 focus-visible:ring-0"
           autoComplete="off"
           value={input}
           onChange={(event) => setInput(event.target.value)}
         />
-        <input
+        <Input
           type="file"
           className="hidden"
           ref={fileInputRef}
