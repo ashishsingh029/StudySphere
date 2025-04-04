@@ -59,6 +59,7 @@ const SignIn = () => {
       onSuccess: (data) => {
         const user = data.user;
         const decodedUrl = returnUrl ? decodeURIComponent(returnUrl) : null;
+        console.log("Signin success , navigating to: ", user.currentWorkspace);
         navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
       },
       onError: (error: any) => {
