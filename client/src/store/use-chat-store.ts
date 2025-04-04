@@ -4,7 +4,6 @@ import { create } from "zustand";
 import API from "@/lib/axios-client";
 import { socket } from "@/lib/socket";
 import { Socket } from "socket.io-client";
-
 interface Message {
   createdAt: string;
   text: string;

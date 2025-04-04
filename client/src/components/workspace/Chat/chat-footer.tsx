@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/store/use-chat-store";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { toast } from "@/hooks/use-toast";
+import profanity from "@devshubham/clean-speech-hindi"
 
 const ChatFooter = () => {
   const [input, setInput] = useState("");
@@ -50,7 +51,7 @@ const ChatFooter = () => {
     if (!workspaceId) return;
 
     const messageData = {
-      text: input,
+      text: profanity.maskBadWords(input),
       file: selectedFile?.preview || undefined,
       filename: selectedFile?.name || undefined,
     };
