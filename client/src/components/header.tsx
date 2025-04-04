@@ -10,10 +10,14 @@ import {
 import { Separator } from "./ui/separator";
 import { Link, useLocation } from "react-router-dom";
 import useWorkspaceId from "@/hooks/use-workspace-id";
+import { Bot } from "lucide-react";
+import { useState } from "react";
+import ChatBot from "./workspace/Chat-Bot/chat-bot";
 
 const Header = () => {
   const location = useLocation();
   const workspaceId = useWorkspaceId();
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
 
   const pathname = location.pathname;
 
@@ -22,7 +26,7 @@ const Header = () => {
     if (pathname.includes("/settings")) return "Settings";
     if (pathname.includes("/tasks")) return "Tasks";
     if (pathname.includes("/members")) return "Members";
-    if(pathname.includes("/chat")) return "Chat"
+    if (pathname.includes("/chat")) return "Chat";
     return null; // Default label
   };
 
@@ -58,7 +62,14 @@ const Header = () => {
             )}
           </BreadcrumbList>
         </Breadcrumb>
+        <div className="ml-auto" onClick={() => setIsChatOpen(true)} title="Ask me Anything">
+          <Bot className="cursor-pointer size-7"/>
+        </div>
+        <ChatBot isOpen={isChatOpen} setIsOpen={setIsChatOpen}/>
       </div>
+      {/* <div>
+        hi
+      </div> */}
     </header>
   );
 };
