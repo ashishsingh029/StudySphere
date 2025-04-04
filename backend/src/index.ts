@@ -7,6 +7,7 @@ import connectDatabase from "./config/database.config";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import bodyParser from "body-parser"
 import "./config/passport.config";
+import path from "path";
 import passport from "passport";
 import authRoutes from "./routes/auth.route";
 import userRoutes from "./routes/user.route";
@@ -16,8 +17,11 @@ import memberRoutes from "./routes/member.route";
 import projectRoutes from "./routes/project.route";
 import taskRoutes from "./routes/task.route";
 import messageRoutes from "./routes/message.route";
-import { app, server } from "./config/socket.config"
+import { app, server } from "./config/socket.config";
+
 const BASE_PATH = config.BASE_PATH;
+const __dirname = path.resolve();
+
 // Increased request size limit (Fix for "PayloadTooLargeError")
 app.use(bodyParser.json({ limit: "10mb" })); 
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true })); 
@@ -37,7 +41,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
-      secure: config.NODE_ENV === "production",
+      // secure: config.NODE_ENV === "production",
       httpOnly: true,
       sameSite: "lax",
     },
@@ -57,6 +61,14 @@ app.use(`${BASE_PATH}/task`, isAuthenticated, taskRoutes);
 app.use(`${BASE_PATH}/chat`, isAuthenticated, messageRoutes);
 
 app.use(errorHandler);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 
 server.listen(config.PORT, async () => {
   console.log(`Server listening on port ${config.PORT} in ${config.NODE_ENV}`);
