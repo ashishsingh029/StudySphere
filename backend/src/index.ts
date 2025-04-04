@@ -62,6 +62,10 @@ app.use(`${BASE_PATH}/chat`, isAuthenticated, messageRoutes);
 
 app.use(errorHandler);
 
+if (config.NODE_ENV === 'production') {
+  app.set("trust proxy", 1);
+}
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
