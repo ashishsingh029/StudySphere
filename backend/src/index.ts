@@ -5,7 +5,7 @@ import session from "express-session";
 import { config } from "./config/app.config";
 import connectDatabase from "./config/database.config";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
-import bodyParser from "body-parser"
+import bodyParser from "body-parser";
 import "./config/passport.config";
 import path from "path";
 import passport from "passport";
@@ -20,11 +20,12 @@ import messageRoutes from "./routes/message.route";
 import { app, server } from "./config/socket.config";
 
 const BASE_PATH = config.BASE_PATH;
-const __dirname = path.resolve();
+
+// ✅ No need to define `__dirname` — it's available in CommonJS
 
 // Increased request size limit (Fix for "PayloadTooLargeError")
-app.use(bodyParser.json({ limit: "10mb" })); 
-app.use(bodyParser.urlencoded({ limit: "10mb", extended: true })); 
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -41,13 +42,11 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
-      // secure: config.NODE_ENV === "production",
       httpOnly: true,
       sameSite: "lax",
     },
   })
 );
-
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -62,11 +61,12 @@ app.use(`${BASE_PATH}/chat`, isAuthenticated, messageRoutes);
 
 app.use(errorHandler);
 
-if (config.NODE_ENV === 'production') {
+if (config.NODE_ENV === "production") {
   app.set("trust proxy", 1);
 }
 
 if (process.env.NODE_ENV === "production") {
+  // ✅ `__dirname` works fine in CommonJS
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   app.get("*", (req, res) => {
