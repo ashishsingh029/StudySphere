@@ -33,6 +33,7 @@ export const sendMessage = asyncHandler(async (req: Request, res: Response) => {
 export const clearMessages = asyncHandler(async (req: Request, res: Response) => {
   const workspaceId = z.string().parse(req.params.workspaceId);
   const userId = req.user?._id;
+  console.log("Clear Messages called");
   let { role } = await getMemberRoleInWorkspace(userId, workspaceId)
   roleGuard(role , [Permissions.DELETE_WORKSPACE])
   await deleteAllMessagesInWorkspaceService(workspaceId);

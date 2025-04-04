@@ -318,3 +318,11 @@ export const sendMessageInWorkspaceQueryFn = async ({
   });
   return response.data;
 };
+
+export const clearChatQueryFn = async (
+  workspaceId: string
+): Promise<any> => {
+  const response = await API.delete(`chat/workspace/${workspaceId}`);
+  console.log("Response check in api");
+  return response.data;
+};
