@@ -26,7 +26,6 @@ const ChatContent = () => {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-  console.log(messages)
   return (
     <CardContent className="flex-1 overflow-y-auto space-y-4 h-[calc(80vh)]">
       {messages.map((message, index: number) => {
