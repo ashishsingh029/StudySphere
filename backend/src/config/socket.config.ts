@@ -15,13 +15,13 @@ io.on("connection", (socket) => {
   console.log("User Connected", socket.id);
 
   socket.on("sendMessage", ({ workspaceId, messageData }) => {
-    console.log({ workspaceId, messageData });
+    // console.log({ workspaceId, messageData });
     socket.to(workspaceId).emit("receiveMessage", messageData);
   });
 
   socket.on("joinWorkspace", (workspaceId: string) => {
     socket.join(workspaceId);
-    console.log(`User joined room ${workspaceId}`);
+    // console.log(`User joined room ${workspaceId}`);
   });
 
   socket.on("disconnect", () => {

@@ -26,6 +26,11 @@ const ChatContent = () => {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+  if (messages.length === 0)
+    return <div className="flex items-center justify-center h-[calc(80vh)]">
+      <h1 className="text-2xl font-semibold text-gray-500">No Messages in Chat</h1>
+    </div>
+
   return (
     <CardContent className="flex-1 overflow-y-auto space-y-4 h-[calc(80vh)]">
       {messages.map((message, index: number) => {
@@ -33,9 +38,8 @@ const ChatContent = () => {
         return (
           <div
             key={index}
-            className={`flex items-start ${
-              isCurrentUser ? "justify-end" : "justify-start"
-            }`}
+            className={`flex items-start ${isCurrentUser ? "justify-end" : "justify-start"
+              }`}
             ref={messageEndRef}
           >
             {/* If the message is from another user */}
@@ -76,7 +80,7 @@ const ChatContent = () => {
                         <div className="flex items-center space-x-2 bg-gray-300 p-2 rounded-md">
                           <span className="bg-gray-200 px-3 py-1 rounded-md text-sm text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis max-w-fit">
                             {
-                             message.fileName
+                              message.fileName
                             }
                           </span>
                           <a
