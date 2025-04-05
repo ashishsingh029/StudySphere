@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import session from "express-session";
 import { config } from "./config/app.config";
 import connectDatabase from "./config/database.config";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
@@ -11,7 +10,8 @@ import path from "path";
 import passport from "passport";
 import authRoutes from "./routes/auth.route";
 import userRoutes from "./routes/user.route";
-import isAuthenticated from "./middlewares/isAuthenticated.middleware";
+// import isAuthenticated from "./middlewares/isAuthenticated.middleware";
+import { passportAuthenticateJWT } from "./config/passport.config";
 import workspaceRoutes from "./routes/workspace.route";
 import memberRoutes from "./routes/member.route";
 import projectRoutes from "./routes/project.route";
@@ -35,29 +35,30 @@ app.use(
   })
 );
 
-app.use(
-  session({
-    secret: config.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-      httpOnly: true,
-      sameSite: "lax",
-    },
-  })
-);
+// Session does not work in production in cross-domain
+// app.use(
+//   session({
+//     secret: config.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       maxAge: 24 * 60 * 60 * 1000, // 1 day
+//       httpOnly: true,
+//       sameSite: "lax",
+//     },
+//   })
+// );
 
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 app.use(`${BASE_PATH}/auth`, authRoutes);
-app.use(`${BASE_PATH}/user`, isAuthenticated, userRoutes);
-app.use(`${BASE_PATH}/workspace`, isAuthenticated, workspaceRoutes);
-app.use(`${BASE_PATH}/member`, isAuthenticated, memberRoutes);
-app.use(`${BASE_PATH}/project`, isAuthenticated, projectRoutes);
-app.use(`${BASE_PATH}/task`, isAuthenticated, taskRoutes);
-app.use(`${BASE_PATH}/chat`, isAuthenticated, messageRoutes);
+app.use(`${BASE_PATH}/user`, passportAuthenticateJWT, userRoutes);
+app.use(`${BASE_PATH}/workspace`, passportAuthenticateJWT, workspaceRoutes);
+app.use(`${BASE_PATH}/member`, passportAuthenticateJWT, memberRoutes);
+app.use(`${BASE_PATH}/project`, passportAuthenticateJWT, projectRoutes);
+app.use(`${BASE_PATH}/task`, passportAuthenticateJWT, taskRoutes);
+app.use(`${BASE_PATH}/chat`, passportAuthenticateJWT, messageRoutes);
 
 app.use(errorHandler);
 
