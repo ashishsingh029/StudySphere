@@ -58,6 +58,11 @@ const SignUp = () => {
     mutate(values, {
       onSuccess: () => {
         navigate("/");
+        toast({
+          title: "Success",
+          description: "Signup Successful",
+          variant: "success",
+        });
       },
       onError: (error: any) => {
         console.log(error);

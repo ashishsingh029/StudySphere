@@ -8,6 +8,7 @@ import { BadRequestException, NotFoundException } from "../utils/appError";
 import TaskModel from "../models/task.model";
 import { TaskStatusEnum } from "../enums/task.enum";
 import ProjectModel from "../models/project.model";
+import MessageModel from "../models/message.model";
 
 //********************************
 // CREATE NEW WORKSPACE
@@ -210,9 +211,10 @@ export const deleteWorkspaceService = async (
     if (!workspace) {
       throw new NotFoundException("Workspace not found");
     }
+    
 
     // Check if the user owns the workspace
-    if (workspace.owner.toString() !== userId) {
+    if (workspace.owner.toString() !== userId.toString()) {    
       throw new BadRequestException(
         "You are not authorized to delete this workspace"
       );
@@ -231,6 +233,10 @@ export const deleteWorkspaceService = async (
     await MemberModel.deleteMany({
       workspaceId: workspace._id,
     }).session(session);
+
+    await MessageModel.deleteMany({
+      workspaceId: workspaceId,
+    }).session(session)
 
     // Update the user's currentWorkspace if it matches the deleted workspace
     if (user?.currentWorkspace?.equals(workspaceId)) {
