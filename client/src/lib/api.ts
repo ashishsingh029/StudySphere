@@ -236,16 +236,16 @@ export const createTaskMutationFn = async ({
   return response.data;
 };
 
-export const getTaskByIdQueryFn = async ({
-  workspaceId,
-  projectId,
-  taskId,
-}: EditTaskPayloadType) => {
-  const response = await API.get(
-    `task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`
-  );
-  // console.log(response);
-};
+// export const getTaskByIdQueryFn = async ({
+//   workspaceId,
+//   projectId,
+//   taskId,
+// }: EditTaskPayloadType) => {
+//   await API.get(
+//     `task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`
+//   );
+//   // console.log(response);
+// };
 
 export const getAllTasksQueryFn = async ({
   workspaceId,
