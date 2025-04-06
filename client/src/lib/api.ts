@@ -40,9 +40,9 @@ export const logoutMutationFn = () => {
   try {
     sessionStorage.removeItem("session-storage");
   } catch (error) {
-    throw(error);
+    throw error;
   }
-}
+};
 
 export const getCurrentUserQueryFn =
   async (): Promise<CurrentUserResponseType> => {
@@ -125,6 +125,15 @@ export const invitedUserJoinWorkspaceMutationFn = async (
   workspaceId: string;
 }> => {
   const response = await API.post(`/member/workspace/${iniviteCode}/join`);
+  return response.data;
+};
+
+export const resetWorkspaceInviteCodeMutationFn = async (
+  workspaceId: string | undefined,
+): Promise<{
+  message: string;
+}> => {
+  const response = await API.put(`/workspace/reset/${workspaceId}`);
   return response.data;
 };
 
@@ -325,9 +334,7 @@ export const sendMessageInWorkspaceQueryFn = async ({
   return response.data;
 };
 
-export const clearChatQueryFn = async (
-  workspaceId: string
-): Promise<any> => {
+export const clearChatQueryFn = async (workspaceId: string): Promise<any> => {
   const response = await API.delete(`chat/workspace/${workspaceId}`);
   console.log("Response check in api");
   return response.data;

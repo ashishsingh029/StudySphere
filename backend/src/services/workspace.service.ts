@@ -275,3 +275,14 @@ export const deleteWorkspaceService = async (
     throw error;
   }
 };
+
+export const resetWorkspaceInviteCodeByIdService = async (
+  workspaceId: string
+) => {
+  const workspace = await WorkspaceModel.findById(workspaceId);
+  if (!workspace) {
+    throw new NotFoundException("Workspace not found");
+  }
+  await workspace.resetInviteCode();
+  await workspace.save();
+};
