@@ -31,7 +31,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const returnUrl = searchParams.get("returnUrl");
-  const { setAccessToken } = useStore()
+  const { setAccessToken } = useStore();
   const { mutate, isPending } = useMutation({
     mutationFn: loginMutationFn,
   });
@@ -62,7 +62,12 @@ const SignIn = () => {
         const user = data.user;
         setAccessToken(accessToken);
         const decodedUrl = returnUrl ? decodeURIComponent(returnUrl) : null;
-        console.log("Signin success , navigating to: ", user.currentWorkspace);
+        toast({
+          title: "Success",
+          description: data.message,
+          variant: "success",
+        });
+        // console.log("Signin success , navigating to: ", user.currentWorkspace);
         navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
       },
       onError: (error: any) => {
@@ -80,14 +85,14 @@ const SignIn = () => {
       <div className="flex w-full max-w-sm flex-col gap-6">
         <div className="flex flex-row justify-center space-x-2">
           <Logo />
-        <Link
-          to="/"
-          className="flex items-center gap-2 self-center font-medium"
-        >
-          StudySphere
-        </Link>
+          <Link
+            to="/"
+            className="flex items-center gap-2 self-center font-medium"
+          >
+            StudySphere
+          </Link>
         </div>
-        
+
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader className="text-center">

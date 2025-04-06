@@ -11,7 +11,7 @@ const Settings = () => {
       <WorkspaceHeader />
       <Separator className="my-4 " />
       <main>
-        <div className="w-full max-w-3xl mx-auto py-3">
+        <div className="w-full mx-auto py-3 px-2">
           <h2 className="text-[20px] leading-[30px] font-semibold mb-3">
             Workspace settings
           </h2>

@@ -40,6 +40,7 @@ const AllMembers = () => {
 
   const { mutate, isPending: isLoading } = useMutation({
     mutationFn: changeWorkspaceMemberRoleMutationFn,
+    
   });
 
   const handleSelect = (roleId: string, memberId: string) => {
@@ -48,6 +49,8 @@ const AllMembers = () => {
       workspaceId,
       data: { roleId, memberId },
     };
+    console.log(queryClient.getQueryCache().getAll());
+    
     mutate(payload, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["members", workspaceId] });
@@ -57,10 +60,10 @@ const AllMembers = () => {
           variant: "success",
         });
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response?.data.message,
           variant: "destructive",
         });
       },

@@ -7,22 +7,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useCallback } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
 import { logoutMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
 import { useStore } from "@/store/store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const LogoutDialog = (props: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { isOpen, setIsOpen } = props;
-  const navigate = useNavigate();
-  const { clearAccessToken } = useStore()
-
+  // const [ isPending, setIsPending ] = useState<boolean>(false);
+  const { clearAccessToken } = useStore();
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -30,15 +28,21 @@ const LogoutDialog = (props: {
     onSuccess: () => {
       queryClient.resetQueries({
         queryKey: ["authUser"],
+        
+      });
+      toast({
+        title: "Success",
+        description: "Logout Successful",
+        variant: "success",
       });
       clearAccessToken();
-      navigate("/");
+      // navigate("/");
       setIsOpen(false);
     },
-    onError: (error) => {
+    onError: (error:any) => {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.response.data.message,
         variant: "destructive",
       });
     },
@@ -49,6 +53,30 @@ const LogoutDialog = (props: {
     if (isPending) return;
     mutate();
   }, [isPending, mutate]);
+
+  // const handleLogout = async () => {
+  //   setIsPending(true);
+  //   try {
+  //     logoutMutationFn();
+  //     clearAccessToken();
+  //     toast({
+  //       title: "Success",
+  //       description: "Logout Successful",
+  //       variant: "success",
+  //     });
+  //     // navigate("/")
+  //     await new Promise((resolve) => setTimeout(resolve, 1500)); // Wait for 1.5 seconds
+  //     window.location.href = '/';
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: "Unable to Logout",
+  //       variant: "destructive",
+  //     });
+  //   } finally {
+  //     setIsPending(false);
+  //   }
+  // };
 
   return (
     <>

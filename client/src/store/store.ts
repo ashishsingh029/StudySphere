@@ -1,11 +1,12 @@
 import { create, StateCreator } from "zustand";
-import { devtools, persist, subscribeWithSelector } from "zustand/middleware";
+import { createJSONStorage, devtools, persist, subscribeWithSelector } from "zustand/middleware";
 import createSelectors from "./selectors";
 import { immer } from "zustand/middleware/immer";
+import { UserType } from "@/types/api.type";
 
 type AuthState = {
   accessToken: string | null;
-  user: null;
+  user: UserType | null;
   setAccessToken: (token: string) => void;
   clearAccessToken: () => void;
 };
@@ -13,7 +14,7 @@ type AuthState = {
 const createAuthSlice: StateCreator<AuthState> = (set) => ({
   accessToken: null,
   user: null,
-  setAccessToken: (token) => set({ accessToken: token }),
+  setAccessToken: (token: string) => set({ accessToken: token }),
   clearAccessToken: () => set({ accessToken: null }),
 });
 
@@ -29,7 +30,7 @@ export const useStoreBase = create<StoreType>()(
       ),
       {
         name: "session-storage", // Name of the item in localStorage (or sessionStorage)
-        getStorage: () => sessionStorage, // (optional) by default it's localStorage
+        storage: createJSONStorage(() => sessionStorage), // (optional) by default it's localStorage
       }
     )
   )

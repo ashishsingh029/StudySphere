@@ -37,8 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     refetch: refetchAuth,
   } = useAuth();
   const user = authData?.user;
-  console.log("Authdata in auth-provider: ", authData);
-  console.log("user in auth-provider: ", authData);
+  // console.log("Authdata in auth-provider: ", authData);
+  // console.log("user in auth-provider: ", authData);
   const {
     data: workspaceData,
     isLoading: workspaceLoading,

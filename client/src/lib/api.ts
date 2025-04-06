@@ -36,7 +36,14 @@ export const loginMutationFn = async (
 export const registerMutationFn = async (data: registerType) =>
   await API.post("/auth/register", data);
 
-export const logoutMutationFn = async () => await API.post("/auth/logout");
+export const logoutMutationFn = async (): Promise<void> => {
+  try {
+    sessionStorage.removeItem("session-storage");
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export const getCurrentUserQueryFn =
   async (): Promise<CurrentUserResponseType> => {
@@ -119,6 +126,15 @@ export const invitedUserJoinWorkspaceMutationFn = async (
   workspaceId: string;
 }> => {
   const response = await API.post(`/member/workspace/${iniviteCode}/join`);
+  return response.data;
+};
+
+export const resetWorkspaceInviteCodeMutationFn = async (
+  workspaceId: string | undefined,
+): Promise<{
+  message: string;
+}> => {
+  const response = await API.put(`/workspace/reset/${workspaceId}`);
   return response.data;
 };
 
@@ -228,7 +244,7 @@ export const getTaskByIdQueryFn = async ({
   const response = await API.get(
     `task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`
   );
-  console.log(response);
+  // console.log(response);
 };
 
 export const getAllTasksQueryFn = async ({
@@ -319,10 +335,8 @@ export const sendMessageInWorkspaceQueryFn = async ({
   return response.data;
 };
 
-export const clearChatQueryFn = async (
-  workspaceId: string
-): Promise<any> => {
+export const clearChatQueryFn = async (workspaceId: string): Promise<any> => {
   const response = await API.delete(`chat/workspace/${workspaceId}`);
-  console.log("Response check in api");
+  // console.log("Response check in api");
   return response.data;
 };

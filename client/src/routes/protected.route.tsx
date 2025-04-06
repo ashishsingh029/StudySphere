@@ -5,11 +5,10 @@ import { Navigate, Outlet } from "react-router-dom";
 const ProtectedRoute = () => {
   const { data: authData, isLoading } = useAuth();
   const user = authData?.user;
-
   if (isLoading) {
     return <DashboardSkeleton />;
   }
-  console.log("Navigating from protected route based on user: ", user)
+  // console.log("Navigating from protected route based on user: ", user)
   return user ? <Outlet /> : <Navigate to="/" replace />;
 };
 

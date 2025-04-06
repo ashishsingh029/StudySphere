@@ -78,17 +78,17 @@ export default function CreateProjectForm({
 
         toast({
           title: "Success",
-          description: "Project created successfully",
+          description: data.message,
           variant: "success",
         });
 
         navigate(`/workspace/${workspaceId}/project/${project._id}`);
         setTimeout(() => onClose(), 500);
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response?.data.message,
           variant: "destructive",
         });
       },

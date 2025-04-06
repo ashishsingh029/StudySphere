@@ -58,9 +58,14 @@ const SignUp = () => {
     mutate(values, {
       onSuccess: () => {
         navigate("/");
+        toast({
+          title: "Success",
+          description: "Now, you can Login",
+          variant: "success",
+        });
       },
       onError: (error: any) => {
-        console.log(error);
+        // console.log(error);
         toast({
           title: "Error",
           description: error.response.data.message,

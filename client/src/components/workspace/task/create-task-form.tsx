@@ -169,10 +169,10 @@ export default function CreateTaskForm(props: {
         });
         onClose();
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response?.data.message,
           variant: "destructive",
         });
       },

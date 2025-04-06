@@ -40,12 +40,17 @@ const InviteUser = () => {
         queryClient.resetQueries({
           queryKey: ["userWorkspaces"],
         });
+        toast({
+          title: "Success",
+          description: data.message,
+          variant: "success",
+        });
         navigate(`/workspace/${data.workspaceId}`);
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response.data.message,
           variant: "destructive",
         });
       },
@@ -69,8 +74,8 @@ const InviteUser = () => {
                 Hey there! You're invited to join a StudySphere Workspace!
               </CardTitle>
               <CardDescription>
-                Looks like you need to be logged into your StudySphere account to
-                join this Workspace.
+                Looks like you need to be logged into your StudySphere account
+                to join this Workspace.
               </CardDescription>
             </CardHeader>
             <CardContent>

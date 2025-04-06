@@ -55,15 +55,19 @@ export default function CreateWorkspaceForm({
         queryClient.resetQueries({
           queryKey: ["userWorkspaces"],
         });
-
         const workspace = data.workspace;
+        toast({
+          title: "Success",
+          description: data.message,
+          variant: "destructive",
+        });
         onClose();
         navigate(`/workspace/${workspace._id}`);
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response?.data.message,
           variant: "destructive",
         });
       },

@@ -93,10 +93,10 @@ export function NavProjects() {
           navigate(`/workspace/${workspaceId}`);
           setTimeout(() => onCloseDialog(), 100);
         },
-        onError: (error) => {
+        onError: (error: any) => {
           toast({
             title: "Error",
-            description: error.message,
+            description: error?.response.data.message,
             variant: "destructive",
           });
         },
@@ -119,7 +119,7 @@ export function NavProjects() {
             </button>
           </PermissionsGuard>
         </SidebarGroupLabel>
-        <SidebarMenu className="h-[320px] scrollbar overflow-y-auto pb-2">
+        <SidebarMenu className="h-[36vh] scrollbar overflow-y-auto overflow-x-hidden pb-2">
           {isError ? <div>Error occured</div> : null}
           {isPending ? (
             <Loader

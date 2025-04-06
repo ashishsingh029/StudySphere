@@ -27,7 +27,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
 
@@ -42,12 +41,22 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       { workspaceId, taskId: task._id },
       {
         onSuccess: (data) => {
-          queryClient.invalidateQueries({ queryKey: ["all-tasks", workspaceId] });
-          toast({ title: "Success", description: data.message, variant: "success" });
+          queryClient.invalidateQueries({
+            queryKey: ["all-tasks", workspaceId],
+          });
+          toast({
+            title: "Success",
+            description: data.message,
+            variant: "success",
+          });
           setOpenDeleteDialog(false);
         },
-        onError: (error) => {
-          toast({ title: "Error", description: error.message, variant: "destructive" });
+        onError: (error: any) => {
+          toast({
+            title: "Error",
+            description: error.response?.data.message,
+            variant: "destructive",
+          });
         },
       }
     );
@@ -57,13 +66,19 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          >
             <MoreHorizontal />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem onClick={() => setIsEditOpen(true)} className="cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => setIsEditOpen(true)}
+            className="cursor-pointer"
+          >
             Edit Task
           </DropdownMenuItem>
 

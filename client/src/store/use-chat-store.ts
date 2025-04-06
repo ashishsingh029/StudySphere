@@ -31,7 +31,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   setupSocketListeners: () => {
     socket.off("receiveMessage"); // prevent duplicate listeners
     socket.on("receiveMessage", (newMessage: Message) => {
-      console.log("📩 Real-time message received:", newMessage);
+      // console.log("📩 Real-time message received:", newMessage);
       set((state) => ({
         messages: [...state.messages, newMessage],
       }));
@@ -44,7 +44,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       const res = await API.get(`chat/workspace/${workspaceId}`);
       set({ messages: res.data.messages });
     } catch (error: any) {
-      console.log("Chat store set message error: ", error);
+      // console.log("Chat store set message error: ", error);
     } finally {
       set({ isMessagesLoading: false });
     }
@@ -56,7 +56,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       socket.emit("sendMessage", { messageData: res.data.sentMessage, workspaceId });
       set({ messages: [...get().messages, res.data.sentMessage] });
     } catch (error: any) {
-      console.log("Chat store sending message error: ", error);
+      // console.log("Chat store sending message error: ", error);
     }
   },
 }));
