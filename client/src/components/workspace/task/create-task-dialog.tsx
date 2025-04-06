@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import CreateTaskForm from "./create-task-form";
 

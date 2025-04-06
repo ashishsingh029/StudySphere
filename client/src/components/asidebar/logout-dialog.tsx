@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useCallback, useState } from "react";
+import { useCallback} from "react";
 import { logoutMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
