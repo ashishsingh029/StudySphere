@@ -67,7 +67,7 @@ export const joinWorkspaceByInviteService = async (
     role: role._id,
   });
   await newMember.save();
-
+  // workspace.resetInviteCode(); // reset invite code after each member joins[not optimal]
   return { workspaceId: workspace._id, role: role.name };
 };
 

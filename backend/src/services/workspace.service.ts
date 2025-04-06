@@ -211,10 +211,9 @@ export const deleteWorkspaceService = async (
     if (!workspace) {
       throw new NotFoundException("Workspace not found");
     }
-    
 
     // Check if the user owns the workspace
-    if (workspace.owner.toString() !== userId.toString()) {    
+    if (workspace.owner.toString() !== userId.toString()) {
       throw new BadRequestException(
         "You are not authorized to delete this workspace"
       );
@@ -223,6 +222,16 @@ export const deleteWorkspaceService = async (
     const user = await UserModel.findById(userId).session(session);
     if (!user) {
       throw new NotFoundException("User not found");
+    }
+
+    const numberOfWorkspacesOwned = await WorkspaceModel.countDocuments({
+      owner: userId,
+    });
+
+    if (numberOfWorkspacesOwned <= 1) {
+      throw new BadRequestException(
+        "You cannot delete your last remaining workspace"
+      );
     }
 
     await ProjectModel.deleteMany({ workspace: workspace._id }).session(
@@ -236,7 +245,7 @@ export const deleteWorkspaceService = async (
 
     await MessageModel.deleteMany({
       workspaceId: workspaceId,
-    }).session(session)
+    }).session(session);
 
     // Update the user's currentWorkspace if it matches the deleted workspace
     if (user?.currentWorkspace?.equals(workspaceId)) {
