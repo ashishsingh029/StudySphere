@@ -28,8 +28,8 @@ export const removeMemberFromWorkspaceController = asyncHandler(
     const workspaceId = z.string().parse(req.params.workspaceId);
     const memberId = z.string().parse(req.params.memberId);
     const userId = req.user?._id;
-    const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
-    roleGuard(role, [Permissions.REMOVE_MEMBER])
+    // const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+    // roleGuard(role, [Permissions.REMOVE_MEMBER])
     await removeMemberFromWorkspaceServive(memberId, workspaceId);
     return res.status(HTTPSTATUS.OK).json({
       message: "Successfully Removed From workspace"

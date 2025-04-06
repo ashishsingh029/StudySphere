@@ -1,5 +1,5 @@
 import { create, StateCreator } from "zustand";
-import { devtools, persist, subscribeWithSelector } from "zustand/middleware";
+import { createJSONStorage, devtools, persist, subscribeWithSelector } from "zustand/middleware";
 import createSelectors from "./selectors";
 import { immer } from "zustand/middleware/immer";
 import { UserType } from "@/types/api.type";
@@ -30,7 +30,7 @@ export const useStoreBase = create<StoreType>()(
       ),
       {
         name: "session-storage", // Name of the item in localStorage (or sessionStorage)
-        getStorage: () => sessionStorage, // (optional) by default it's localStorage
+        storage: createJSONStorage(() => sessionStorage), // (optional) by default it's localStorage
       }
     )
   )

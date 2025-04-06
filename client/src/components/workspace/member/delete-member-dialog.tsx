@@ -24,6 +24,11 @@ export function DeleteMemberDialog({ member }: { member?: MemberType }) {
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ["members", workspaceId] });
+
+          queryClient.invalidateQueries({ queryKey: ["workspace",workspaceId] });
+          // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
+          // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
+          // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
           toast({
             title: "Success",
             description: data.message,
@@ -51,7 +56,7 @@ export function DeleteMemberDialog({ member }: { member?: MemberType }) {
           onClick={() => setOpenDeleteDialog(true)}
         >
           {" "}
-          Delete
+          Remove
         </Button>
       </div>
 
@@ -63,7 +68,7 @@ export function DeleteMemberDialog({ member }: { member?: MemberType }) {
         onConfirm={handleConfirm}
         title="Remove Member"
         description={`Are you sure you want to delete`}
-        confirmText="Delete"
+        confirmText="Remove"
         cancelText="Cancel"
       />
     </>

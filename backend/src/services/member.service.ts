@@ -76,5 +76,6 @@ export const removeMemberFromWorkspaceServive = async (
   workspaceId: string
 ) => {
   await MemberModel.findOneAndDelete({ _id: memberId, workspaceId: workspaceId });
+  
   return { success: true }
 }

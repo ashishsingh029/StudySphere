@@ -40,6 +40,7 @@ const AllMembers = () => {
 
   const { mutate, isPending: isLoading } = useMutation({
     mutationFn: changeWorkspaceMemberRoleMutationFn,
+    
   });
 
   const handleSelect = (roleId: string, memberId: string) => {
@@ -48,6 +49,8 @@ const AllMembers = () => {
       workspaceId,
       data: { roleId, memberId },
     };
+    console.log(queryClient.getQueryCache().getAll());
+    
     mutate(payload, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["members", workspaceId] });

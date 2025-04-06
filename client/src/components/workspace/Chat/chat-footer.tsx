@@ -59,11 +59,11 @@ const ChatFooter = () => {
     try {
       setIsSendingMesage(true);
       await sendMessage(messageData, workspaceId);
-      toast({
-        title: "Success",
-        description: "Message Sent Successfully",
-        variant: "success",
-      });
+      // toast({
+      //   title: "Success",
+      //   description: "Message Sent Successfully",
+      //   variant: "success",
+      // });
       setInput("");
       removeSelectedFile();
     } catch (error) {

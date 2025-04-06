@@ -36,13 +36,14 @@ export const loginMutationFn = async (
 export const registerMutationFn = async (data: registerType) =>
   await API.post("/auth/register", data);
 
-export const logoutMutationFn = () => {
+export const logoutMutationFn = async (): Promise<void> => {
   try {
     sessionStorage.removeItem("session-storage");
   } catch (error) {
     throw error;
   }
 };
+
 
 export const getCurrentUserQueryFn =
   async (): Promise<CurrentUserResponseType> => {
