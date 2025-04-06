@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { logoutMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
 import { useStore } from "@/store/store";
 
@@ -20,7 +19,6 @@ const LogoutDialog = (props: {
 }) => {
   const { isOpen, setIsOpen } = props;
   const [ isPending, setIsPending ] = useState<boolean>(false);
-  const navigate = useNavigate();
   const { clearAccessToken } = useStore();
 
   // const { mutate, isPending } = useMutation({
@@ -50,16 +48,17 @@ const LogoutDialog = (props: {
 
   const handleLogout = async () => {
     setIsPending(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // Wait for 1.5 seconds
     try {
       logoutMutationFn();
       clearAccessToken();
-      navigate("/");
       toast({
         title: "Success",
         description: "Logout Successful",
         variant: "success",
       });
+      // navigate("/")
+      await new Promise((resolve) => setTimeout(resolve, 1500)); // Wait for 1.5 seconds
+      window.location.href = '/';
     } catch (error) {
       toast({
         title: "Error",

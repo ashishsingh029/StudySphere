@@ -2,10 +2,11 @@ import { create, StateCreator } from "zustand";
 import { devtools, persist, subscribeWithSelector } from "zustand/middleware";
 import createSelectors from "./selectors";
 import { immer } from "zustand/middleware/immer";
+import { UserType } from "@/types/api.type";
 
 type AuthState = {
   accessToken: string | null;
-  user: null;
+  user: UserType | null;
   setAccessToken: (token: string) => void;
   clearAccessToken: () => void;
 };
@@ -13,7 +14,7 @@ type AuthState = {
 const createAuthSlice: StateCreator<AuthState> = (set) => ({
   accessToken: null,
   user: null,
-  setAccessToken: (token) => set({ accessToken: token }),
+  setAccessToken: (token: string) => set({ accessToken: token }),
   clearAccessToken: () => set({ accessToken: null }),
 });
 
