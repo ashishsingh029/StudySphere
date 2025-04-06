@@ -7,8 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useCallback } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { logoutMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -20,35 +19,57 @@ const LogoutDialog = (props: {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { isOpen, setIsOpen } = props;
+  const [ isPending, setIsPending ] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { clearAccessToken } = useStore()
+  const { clearAccessToken } = useStore();
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: logoutMutationFn,
-    onSuccess: () => {
-      queryClient.resetQueries({
-        queryKey: ["authUser"],
-      });
-      clearAccessToken();
-      navigate("/");
-      setIsOpen(false);
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: logoutMutationFn,
+  //   onSuccess: () => {
+  //     queryClient.resetQueries({
+  //       queryKey: ["authUser"],
+  //     });
+  //     clearAccessToken();
+  //     navigate("/");
+  //     setIsOpen(false);
+  //   },
+  //   onError: (error) => {
+  //     toast({
+  //       title: "Error",
+  //       description: error.message,
+  //       variant: "destructive",
+  //     });
+  //   },
+  // });
 
   // Handle logout action
-  const handleLogout = useCallback(() => {
-    if (isPending) return;
-    mutate();
-  }, [isPending, mutate]);
+  // const handleLogout = useCallback(() => {
+  //   if (isPending) return;
+  //   mutate();
+  // }, [isPending, mutate]);
+
+  const handleLogout = async () => {
+    setIsPending(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000)); // Wait for 3 seconds
+    try {
+      logoutMutationFn();
+      clearAccessToken();
+      navigate("/");
+      toast({
+        title: "Success",
+        description: "Logout Successful",
+        variant: "success",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Unable to Logout",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <>

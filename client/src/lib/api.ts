@@ -39,12 +39,9 @@ export const registerMutationFn = async (data: registerType) =>
 export const logoutMutationFn = () => {
   try {
     sessionStorage.removeItem("session-storage");
-    return "Logout Successful";
   } catch (error) {
-    return error
+    throw(error);
   }
-  
-  // await API.post("/auth/logout");
 }
 
 export const getCurrentUserQueryFn =
