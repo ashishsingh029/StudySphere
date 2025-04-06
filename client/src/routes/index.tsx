@@ -16,7 +16,7 @@ function AppRoutes() {
       <Routes>
         <Route element={<BaseLayout />}>
           {baseRoutePaths.map((route) => (
-            <Route key={route.path} path={"https://studysphere-frontend.onrender.com/invite/workspace/:inviteCode/join"} element={route.element} />
+            <Route key={route.path} path={route.path} element={route.element} />
           ))}
         </Route>
 
