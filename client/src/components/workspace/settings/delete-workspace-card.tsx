@@ -30,12 +30,17 @@ const DeleteWorkspaceCard = () => {
           queryKey: ["userWorkspaces"],
         });
         navigate(`/workspace/${data.currentWorkspace}`);
+        toast({
+          title: "Suceess",
+          description: data.message,
+          variant: "success",
+        });
         setTimeout(() => onCloseDialog(), 100);
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast({
           title: "Error",
-          description: error.message,
+          description: error.response?.data.message,
           variant: "destructive",
         });
       },

@@ -50,7 +50,7 @@ const LogoutDialog = (props: {
 
   const handleLogout = async () => {
     setIsPending(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000)); // Wait for 3 seconds
+    await new Promise((resolve) => setTimeout(resolve, 1500)); // Wait for 1.5 seconds
     try {
       logoutMutationFn();
       clearAccessToken();

@@ -243,7 +243,7 @@ export const getTaskByIdQueryFn = async ({
   const response = await API.get(
     `task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`
   );
-  console.log(response);
+  // console.log(response);
 };
 
 export const getAllTasksQueryFn = async ({
@@ -336,6 +336,6 @@ export const sendMessageInWorkspaceQueryFn = async ({
 
 export const clearChatQueryFn = async (workspaceId: string): Promise<any> => {
   const response = await API.delete(`chat/workspace/${workspaceId}`);
-  console.log("Response check in api");
+  // console.log("Response check in api");
   return response.data;
 };

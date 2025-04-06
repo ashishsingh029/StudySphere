@@ -23,7 +23,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (!user || !socket || !workspaceId) {
-      console.log(user, socket, workspaceId);
+      // console.log(user, socket, workspaceId);
       return;
     }
     socket.emit("joinWorkspace", workspaceId);

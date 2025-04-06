@@ -59,10 +59,20 @@ const ChatFooter = () => {
     try {
       setIsSendingMesage(true);
       await sendMessage(messageData, workspaceId);
+      toast({
+        title: "Success",
+        description: "Message Sent Successfully",
+        variant: "success",
+      });
       setInput("");
       removeSelectedFile();
     } catch (error) {
       console.error("Failed to send message:", error);
+      toast({
+        title: "Error",
+        description: "Can't send message",
+        variant: "destructive",
+      });
     } finally {
       setIsSendingMesage(false);
     }

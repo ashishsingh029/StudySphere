@@ -93,10 +93,10 @@ export function NavProjects() {
           navigate(`/workspace/${workspaceId}`);
           setTimeout(() => onCloseDialog(), 100);
         },
-        onError: (error) => {
+        onError: (error: any) => {
           toast({
             title: "Error",
-            description: error.message,
+            description: error?.response.data.message,
             variant: "destructive",
           });
         },

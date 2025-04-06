@@ -22,7 +22,7 @@ const Header = () => {
   const pathname = location.pathname;
 
   const getPageLabel = (pathname: string) => {
-    if (pathname.includes("/project/")) return "Plan";
+    if (pathname.includes("/project")) return "Plan";
     if (pathname.includes("/settings")) return "Settings";
     if (pathname.includes("/tasks")) return "Tasks";
     if (pathname.includes("/members")) return "Members";
