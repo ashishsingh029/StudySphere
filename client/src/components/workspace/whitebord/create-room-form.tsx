@@ -16,7 +16,7 @@ import { toast } from "@/hooks/use-toast";
 import { CheckIcon, CopyIcon, Loader, RefreshCcwIcon } from "lucide-react";
 import { useAuthContext } from "@/context/auth-provider";
 import useWorkspaceId from "@/hooks/use-workspace-id";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { socket } from "@/context/whiteboard-socket";
 // Schema
 const formSchema = z.object({
@@ -32,9 +32,9 @@ const formSchema = z.object({
 export default function CreateRoomForm({ generateRoomCode }: { generateRoomCode: () => string }) {
     const [copied, setCopied] = useState<boolean>(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
-    const { user,setRoomData } = useAuthContext()
+    const { user } = useAuthContext();
     const workspaceId = useWorkspaceId();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -85,7 +85,13 @@ export default function CreateRoomForm({ generateRoomCode }: { generateRoomCode:
         };
     
         socket.emit("createRoom", RoomData, (response: { success: boolean; message?: string }) => {
-            if(!response.success) {
+            if(response.success) {
+                toast({
+                    title: "Success",
+                    description: response.message || "Room Created Successfully",
+                    variant: "success",
+                });
+            } else {
                 toast({
                     title: "Room Creation Failed",
                     description: response.message || "Something went wrong. Try again.",
