@@ -115,6 +115,15 @@ whiteboardNamespace.on("connection", (socket) => {
 
 
 
+    socket.on("whiteboard-changes", ({ roomId, snapshot }) => {
+      if (snapshot) {
+        socket.to(roomId).emit("whiteboard-changes", snapshot);
+        // console.log("Changes listened");
+      }
+      
+      // socket.to(roomId).emit("whiteboard-changes", snapshot);
+    });
+  
 
   // socket.on("draw", ({ boardId, drawingData }) => {
   //   socket.to(boardId).emit("draw", drawingData);
