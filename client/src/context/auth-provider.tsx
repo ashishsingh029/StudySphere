@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import useAuth from "@/hooks/api/use-auth";
 import { UserType, WorkspaceType } from "@/types/api.type";
@@ -19,6 +19,17 @@ type AuthContextType = {
   workspaceLoading: boolean;
   refetchAuth: () => void;
   refetchWorkspace: () => void;
+  roomData: RoomDataType;
+  setRoomData: React.Dispatch<React.SetStateAction<RoomDataType>>;
+};
+
+type RoomDataType = {
+  roomName: string;
+  roomId: string;
+  userId?: string;
+  userName?: string;
+  host: boolean;
+  presenter: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,6 +39,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const navigate = useNavigate();
   const workspaceId = useWorkspaceId();
+
+  
 
   const {
     data: authData,
@@ -61,6 +74,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const hasPermission = (permission: PermissionType): boolean => {
     return permissions.includes(permission);
   };
+  const [roomData, setRoomData] = useState<RoomDataType>({
+    roomName: "",
+    roomId: "",
+    userId:"",
+    userName:"",
+    host: false,
+    presenter: false
+  });
 
   return (
     <AuthContext.Provider
@@ -74,6 +95,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         workspaceLoading,
         refetchAuth,
         refetchWorkspace,
+        roomData,
+        setRoomData,
       }}
     >
       {children}

@@ -9,6 +9,9 @@ import Tasks from "@/page/workspace/Tasks";
 import { AUTH_ROUTES, BASE_ROUTE, PROTECTED_ROUTES } from "./routePaths";
 import InviteUser from "@/page/invite/InviteUser";
 import Chat from "@/page/workspace/Chat";
+import CreateRoom from "@/page/workspace/Whiteboard/create-room";
+import JoinRoom from "@/page/workspace/Whiteboard/join-room";
+import Canva from "@/page/workspace/Whiteboard/canva";
 
 export const authenticationRoutePaths = [
   { path: AUTH_ROUTES.SIGN_IN, element: <SignIn /> },
@@ -23,6 +26,9 @@ export const protectedRoutePaths = [
   { path: PROTECTED_ROUTES.SETTINGS, element: <Settings /> },
   { path: PROTECTED_ROUTES.PROJECT_DETAILS, element: <ProjectDetails /> },
   { path: PROTECTED_ROUTES.CHAT, element: <Chat /> },
+  { path: PROTECTED_ROUTES.WHITEBOARD, element: <Canva /> },
+  { path : PROTECTED_ROUTES.WHITEBOARD_CREATE, element:<CreateRoom/>},
+  { path : PROTECTED_ROUTES.WHITEBOARD_JOIN, element:<JoinRoom/>}
 ];
 
 export const baseRoutePaths = [

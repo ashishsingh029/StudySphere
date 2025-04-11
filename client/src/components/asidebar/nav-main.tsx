@@ -7,6 +7,8 @@ import {
   CheckCircle,
   LayoutDashboard,
   MessageCircleMore,
+  Monitor,
+  ChevronRight,
 } from "lucide-react";
 import {
   SidebarGroup,
@@ -18,6 +20,12 @@ import { Link, useLocation } from "react-router-dom";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { useAuthContext } from "@/context/auth-provider";
 import { Permissions } from "@/constant";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 type ItemType = {
   title: string;
@@ -67,22 +75,58 @@ export function NavMain() {
       title: "Chat",
       url: `/workspace/${workspaceId}/chat`,
       icon: MessageCircleMore,
+    },
+    {
+      title: "Whiteboard",
+      url: `/workspace/${workspaceId}/whiteboard`,
+      icon: Monitor,
     }
   ];
   return (
     <SidebarGroup>
       <SidebarMenu>
         {items.map((item) => (
-          <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton isActive={item.url === pathname} asChild>
-              <Link to={item.url} className="!text-[15px]">
-                <item.icon />
-                <span>{item.title}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          item.title !== "Whiteboard" ? (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton isActive={item.url === pathname} asChild>
+                <Link to={item.url} className="!text-[15px]">
+                  <item.icon />
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ) : (
+            <SidebarMenuItem key="Whiteboard">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton isActive={pathname.includes(item.url)}>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-2">
+                        <item.icon className="w-4 h-4" />
+                        <span>Whiteboard</span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    </div>
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="right" align="start" className="ml-2">
+                  <DropdownMenuItem asChild>
+                    <Link to={`${item.url}/create`}>
+                      Create Room
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to={`${item.url}/join`}>
+                      Join Room
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          )
         ))}
       </SidebarMenu>
     </SidebarGroup>
+
   );
 }
