@@ -9,7 +9,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { socket } from "@/lib/whiteboard-socket";
-import { X } from "lucide-react";
+// import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Chat from "./chat";
 
@@ -30,7 +30,7 @@ interface SidePanelProps {
 
 export default function SidePanel({
   showPanel,
-  setShowPanel,
+  // setShowPanel,
   panelRef,
   users,
 }: SidePanelProps) {
@@ -58,11 +58,11 @@ export default function SidePanel({
     >
       <div className="flex justify-between mb-2  ">
         <Button variant="destructive" className="h-8 w-full rounded-none" onClick={leaveRoom}> Leave Room</Button>
-        <div className="flex justify-end items-center">
-          {/* <Button variant="ghost" size="sm" onClick={() => setShowPanel(false)}>
+        {/* <div className="flex justify-end items-center">
+          <Button variant="ghost" size="sm" onClick={() => setShowPanel(false)}>
             <X />
-          </Button> */}
-        </div>
+          </Button>
+        </div> */}
       </div>
 
 
