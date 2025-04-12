@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 // import ChatHeader from "@/components/workspace/Chat/chat-header";
-import ChatContent from "@/components/workspace/chat/chat-content";
-import ChatFooter from "@/components/workspace/chat/chat-footer";
+import ChatContent from "@/components/workspace/Chat/chat-content";
+import ChatFooter from "@/components/workspace/Chat/chat-footer";
 import { ChatSkeleton } from "@/components/skeleton-loaders/chat-skeleton";
 import { useChatStore } from "@/store/use-chat-store";
 import useWorkspaceId from "@/hooks/use-workspace-id";
