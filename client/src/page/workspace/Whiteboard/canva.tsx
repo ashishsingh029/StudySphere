@@ -225,7 +225,7 @@ export default function Canva() {
 
       <SidePanel
         showPanel={showPanel}
-        setShowPanel={setShowPanel}
+        // setShowPanel={setShowPanel}
         panelRef={panelRef}
         users={users}
       />

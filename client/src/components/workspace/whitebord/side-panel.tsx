@@ -21,7 +21,7 @@ interface User {
 
 interface SidePanelProps {
   showPanel: boolean;
-  setShowPanel: (value: boolean) => void;
+  // setShowPanel: (value: boolean) => void;
   panelRef: React.RefObject<HTMLDivElement>;
   users: User[]; // 👈 added users prop
 }
