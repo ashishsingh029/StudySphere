@@ -1,7 +1,7 @@
 import { Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "@/context/auth-provider";
@@ -123,15 +123,15 @@ const Chat = () => {
                     </div>
                 }
             </CardContent>
-            <CardFooter className="w-full p-1 absolute bottom-0 bg-blue-300">
+            <CardFooter className="w-full p-1 absolute bottom-0 bg-blue-300 text-xs">
                 <form
                     onSubmit={handleMessageSend}
-                    className="flex items-center space-x-2 w-full"
+                    className="flex items-center space-x-2"
                 >
                     <Input
                         id="message"
                         placeholder="Type your message..."
-                        className="flex-1 bg-white focus-visible:ring-0 border-none rounded-md px-4"
+                        className="flex-1 bg-white focus-visible:ring-0 border-none rounded-md p-2"
                         autoComplete="off"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}

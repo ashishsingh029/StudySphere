@@ -127,7 +127,7 @@ export default function CreateRoomForm({
           Create Room
         </h1>
         <p className="text-muted-foreground text-sm leading-tight">
-          Organize and manage tasks, resources, and team collaboration
+          Set up a shared space to brainstorm, solve problems, and learn together—perfect for study groups and project teams.
         </p>
       </div>
 

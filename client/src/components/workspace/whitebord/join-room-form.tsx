@@ -89,7 +89,7 @@ export default function JoinRoomForm() {
             Join Room
           </h1>
           <p className="text-muted-foreground text-sm leading-tight">
-            Organize and manage tasks, resources, and team collaboration
+            Team up with peers in a shared workspace to exchange ideas, collaborate on tasks, and study smarter—together.
           </p>
         </div>
 
