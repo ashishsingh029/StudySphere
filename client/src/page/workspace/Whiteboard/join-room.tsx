@@ -1,5 +1,5 @@
 import JoinRoomForm from "@/components/workspace/whitebord/join-room-form";
-import { socket } from "@/context/whiteboard-socket";
+import { socket } from "@/lib/whiteboard-socket";
 import { useEffect } from "react";
 // import { socket } from "@/context/whiteboard-socket";
 // import { useEffect } from "react";
@@ -7,7 +7,6 @@ interface User {
   userId: string;
   userName: string;
   host: boolean;
-  presenter: boolean;
 }
 export default function JoinRoom() {
     // useEffect(() => {
@@ -26,7 +25,6 @@ export default function JoinRoom() {
     // }, []);
     useEffect(() => {
         socket.on("roomUserList", (data: { users: User[] }) => {
-          console.log(data.users);
            if (!data?.users?.length) {
           console.warn("⚠️ No users received");
         }  

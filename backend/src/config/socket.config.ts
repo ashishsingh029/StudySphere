@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import { config } from "./app.config";
+
 const app = express();
 const server = http.createServer(app);
 
@@ -11,19 +12,14 @@ const io = new Server(server, {
   },
 });
 
-
 // ---------------- CHAT SOCKET ----------------
 io.on("connection", (socket) => {
-  // console.log("User Connected", socket.id);
-
   socket.on("sendMessage", ({ workspaceId, messageData }) => {
-    // console.log({ workspaceId, messageData });
     socket.to(workspaceId).emit("receiveMessage", messageData);
   });
 
   socket.on("joinWorkspace", (workspaceId: string) => {
     socket.join(workspaceId);
-    // console.log(`User joined room ${workspaceId}`);
   });
 
   socket.on("disconnect", () => {
@@ -31,21 +27,23 @@ io.on("connection", (socket) => {
   });
 });
 
-
-// ---------------- WHITEBOARD SOCKET (custom namespace) ----------------
-
-// In-memory store for rooms and their users
+// ---------------- WHITEBOARD SOCKET ----------------
 const whiteboardRooms = new Map<
   string,
   {
     roomName: string;
     roomId: string;
-    workspaceId: string,
+    workspaceId: string;
+    creator: {
+      userId: string;
+      userName: string;
+      host: boolean;
+    };
     users: {
       userId: string;
       userName: string;
       host: boolean;
-      presenter: boolean;
+      socketId: string;
     }[];
   }
 >();
@@ -55,8 +53,10 @@ const whiteboardNamespace = io.of("/whiteboard");
 whiteboardNamespace.on("connection", (socket) => {
   console.log("User Joined (Whiteboard):", socket.id);
 
+  // Create Room
   socket.on("createRoom", (data, callback) => {
-    const { roomName, roomId, workspaceId, userId, userName, host, presenter } = data
+    const { roomName, roomId, workspaceId, userId, userName, host } = data;
+
     if (whiteboardRooms.has(roomId)) {
       return callback({ success: false, message: "Room already exists" });
     }
@@ -65,17 +65,17 @@ whiteboardNamespace.on("connection", (socket) => {
       roomName,
       roomId,
       workspaceId,
-      users: [{ userId, userName, host, presenter }],
+      creator: { userId, userName, host },
+      users: [], // Empty at first
     });
-    socket.join(roomId);
+
     console.log(`Room created: ${roomId}`);
     callback({ success: true });
   });
 
-
-  // Join room
+  // Join Room
   socket.on("joinRoom", (data, callback) => {
-    const { roomId, roomName, workspaceId, userId, userName, host, presenter } = data;
+    const { roomId, roomName, workspaceId, userId, userName, host } = data;
     const room = whiteboardRooms.get(roomId);
 
     if (!room || room.roomName !== roomName || room.roomId !== roomId) {
@@ -87,23 +87,36 @@ whiteboardNamespace.on("connection", (socket) => {
     }
 
     const alreadyInRoom = room.users.some((user) => user.userId === userId);
-    if (!alreadyInRoom) {
-      room.users.push({ userId, userName, host, presenter});
+
+    // Host joins → add creator to beginning of array
+    if (room.creator.userId === userId && !alreadyInRoom) {
+      room.users.unshift({
+        ...room.creator,
+        socketId: socket.id,
+      });
+    }
+
+    // Participant joins
+    else if (!alreadyInRoom) {
+      room.users.push({
+        userId,
+        userName,
+        host,
+        socketId: socket.id,
+      });
     }
 
     socket.join(roomId);
     console.log(`User ${userName} joined room: ${roomId}`);
-    
-    
-    // ✅ Only send updated user list (no count)
+
     whiteboardNamespace.to(roomId).emit("roomUserList", {
-      users: room.users
+      users: room.users,
     });
-    console.log(room.users)
 
     callback({ success: true });
   });
 
+  // Get Room Users
   socket.on("getRoomUsers", (roomId, callback) => {
     const room = whiteboardRooms.get(roomId);
     if (room) {
@@ -113,51 +126,62 @@ whiteboardNamespace.on("connection", (socket) => {
     }
   });
 
+  // Whiteboard Drawing Sync
+  socket.on("whiteboard-changes", ({ roomId, snapshot }) => {
+    if (snapshot) {
+      socket.to(roomId).emit("whiteboard-changes", snapshot);
+    }
+  });
 
+  // Message Handling
+  socket.on("message", (data) => {
+    const { roomId, message, userId, userName} = data;
 
-    socket.on("whiteboard-changes", ({ roomId, snapshot }) => {
-      if (snapshot) {
-        socket.to(roomId).emit("whiteboard-changes", snapshot);
-        // console.log("Changes listened");
-      }
-      
-      // socket.to(roomId).emit("whiteboard-changes", snapshot);
+    // Broadcast message to all users in the room except the sender
+    socket.broadcast.to(roomId).emit("message", {
+      message,
+      userId,
+      userName,
+      timestamp: new Date().toISOString(),
     });
-  
+  });
 
-  // socket.on("draw", ({ boardId, drawingData }) => {
-  //   socket.to(boardId).emit("draw", drawingData);
-  // });
 
-  // socket.on("disconnect", () => {
-  //   console.log("User Disconnected (Whiteboard):", socket.id);
-  
-  //   // Loop through all rooms to find which room this socket belonged to
-  //   for (const [roomId, room] of whiteboardRooms.entries()) {
-  //     const userIndex = room.users.findIndex((u) => u.socketId === socket.id);
-  
-  //     if (userIndex !== -1) {
-  //       const disconnectedUser = room.users[userIndex];
-  //       room.users.splice(userIndex, 1); // Remove user
-  
-  //       console.log(`User ${disconnectedUser.userName} removed from room: ${roomId}`);
-  
-  //       // Notify remaining users in the room
-  //       whiteboardNamespace.to(roomId).emit("roomUserList", {
-  //         users: room.users,
-  //       });
-  
-  //       // Optionally: Clean up the room if no users remain
-  //       if (room.users.length === 0) {
-  //         whiteboardRooms.delete(roomId);
-  //         console.log(`Room ${roomId} deleted (no users left)`);
-  //       }
-  
-  //       break; // Stop after finding the relevant room
-  //     }
-  //   }
-  // });
-  
+  // Disconnect Logic
+  socket.on("disconnect", () => {
+    console.log("User Disconnected (Whiteboard):", socket.id);
+
+    for (const [roomId, room] of whiteboardRooms.entries()) {
+      const userIndex = room.users.findIndex((u) => u.socketId === socket.id);
+
+      if (userIndex !== -1) {
+        const removedUser = room.users[userIndex];
+        room.users.splice(userIndex, 1);
+
+        console.log(`User ${removedUser.userName} removed from room: ${roomId}`);
+
+        // 🚨 If host left
+        if (removedUser.host) {
+          whiteboardNamespace.to(roomId).emit("roomClosed");
+          whiteboardRooms.delete(roomId);
+          console.log(`Room ${roomId} closed by host`);
+        } else {
+          // Notify remaining users
+          whiteboardNamespace.to(roomId).emit("roomUserList", {
+            users: room.users,
+          });
+
+          // Optional: delete room if no users remain
+          // if (room.users.length === 0) {
+          //   whiteboardRooms.delete(roomId);
+          //   console.log(`Room ${roomId} deleted (no users left)`);
+          // }
+        }
+
+        break; // exit loop once user is found
+      }
+    }
+  });
 });
 
-export { io, app, server };
+export { io, app, server }; 
