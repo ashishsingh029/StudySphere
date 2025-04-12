@@ -42,16 +42,11 @@ export default function Canva() {
     return users.find((u) => u.userId === user?._id)?.host ?? false;
   }, [users, user?._id]);
 
-    if (!user?._id) {
-    navigate(`/workspace/${workspaceId}`);
-    return null;
-  }
-
   useEffect(() => {
     if (!user?._id || users.length === 0) return;
-  
+
     const isInRoom = users.some(u => u.userId === user._id);
-  
+
     if (!isInRoom) {
       // toast({
       //   title: "Left the room",
@@ -96,11 +91,11 @@ export default function Canva() {
     });
 
     socket.on("roomUserList", (data: { users: User[] }) => {
-      const prevUserIds = users.map((u) => u.userId);
-      const newUserIds = data.users.map((u) => u.userId);
+      const prevUserIds = new Set(users.map((u) => u.userId));
+      const newUserIds = new Set(data.users.map((u) => u.userId));
 
-      const joined = data.users.find((u) => !prevUserIds.includes(u.userId));
-      const left = users.find((u) => !newUserIds.includes(u.userId));
+      const joined = data.users.find((u) => !prevUserIds.has(u.userId));
+      const left = users.find((u) => !newUserIds.has(u.userId));
 
       if (joined && joined.userId !== user?._id) {
         toast({
@@ -108,6 +103,7 @@ export default function Canva() {
           variant: "success",
         });
       }
+
       if (left && left.userId !== user?._id) {
         toast({
           title: `${left.userName} left the room`,
@@ -115,8 +111,15 @@ export default function Canva() {
         });
       }
 
-      setUsers(data.users);
+      const hasChanged =
+        users.length !== data.users.length ||
+        [...prevUserIds].some((id) => !newUserIds.has(id));
+
+      if (hasChanged) {
+        setUsers(data.users);
+      }
     });
+
     return () => {
       socket.off("roomUserList");
     };
@@ -150,14 +153,14 @@ export default function Canva() {
       socket.disconnect();
       navigate(`/workspace/${workspaceId}`);
     };
-  
+
     socket.on("roomClosed", handleRoomClosed);
-  
+
     return () => {
       socket.off("roomClosed", handleRoomClosed);
     };
   }, [navigate, workspaceId]);
-  
+
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -171,14 +174,11 @@ export default function Canva() {
       }
     };
 
-    if (showPanel) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showPanel]);
+  }, []);
 
   return (
     <div className="relative w-full h-[89vh]">
@@ -212,12 +212,12 @@ export default function Canva() {
         }}
       />
 
-      <div className="absolute top-0 right-0 sm:bottom-12 sm:top-auto sm:right-auto z-50">
+      <div className="absolute top-1 right-1 sm:bottom-12 sm:top-auto sm:right-auto sm:ml-1 z-50 ">
         <Button
           ref={buttonRef}
           onClick={() => setShowPanel((prev) => !prev)}
-          className="text-base bg-slate-400 text-black
-          hover:bg-slate-200 dark:bg-black dark:text-white rounded-none font-semibold"
+          className="text-base bg-slate-400
+          hover:bg-slate-600 rounded-md font-semibold"
         >
           <p>Info</p>
         </Button>

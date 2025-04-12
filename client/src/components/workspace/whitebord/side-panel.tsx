@@ -56,12 +56,12 @@ export default function SidePanel({
       className={`absolute top-12 h-[72vh] w-64 bg-blue-50 shadow-xl border-l z-50  transition-all duration-300 ease-in-out text-xs ${showPanel ? "left-0" : "-left-96"
         }`}
     >
-      <div className="flex justify-between mb-2 ml-1 ">
-        <Button variant="destructive" className="h-8" onClick={leaveRoom}> Leave </Button>
+      <div className="flex justify-between mb-2  ">
+        <Button variant="destructive" className="h-8 w-full rounded-none" onClick={leaveRoom}> Leave Room</Button>
         <div className="flex justify-end items-center">
-          <Button variant="ghost" size="sm" onClick={() => setShowPanel(false)}>
+          {/* <Button variant="ghost" size="sm" onClick={() => setShowPanel(false)}>
             <X />
-          </Button>
+          </Button> */}
         </div>
       </div>
 
