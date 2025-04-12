@@ -97,18 +97,35 @@ export default function Canva() {
       const joined = data.users.find((u) => !prevUserIds.has(u.userId));
       const left = users.find((u) => !newUserIds.has(u.userId));
 
-      if (joined && joined.userId !== user?._id) {
-        toast({
-          title: `${joined.userName} joined the room`,
-          variant: "success",
-        });
+      if (joined && joined.userId !== user?._id) {      
+        if(joined.host){
+          toast({
+            title: `Host joined the room`,
+            variant: "success",
+          });
+        }
+        else{
+          toast({
+            title: `${joined.userName} joined the room`,
+            variant: "success",
+          });
+        }
       }
 
       if (left && left.userId !== user?._id) {
-        toast({
-          title: `${left.userName} left the room`,
-          variant: "destructive",
-        });
+        if(left.host){
+          toast({
+            title: `Host left the room`,
+            variant: "destructive",
+          });
+        }
+        else{
+          toast({
+            title: `${left.userName} left the room`,
+            variant: "destructive",
+          });
+        }
+       
       }
 
       const hasChanged =

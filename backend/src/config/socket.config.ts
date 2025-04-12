@@ -147,21 +147,21 @@ whiteboardNamespace.on("connection", (socket) => {
   });
 
 
-  // Disconnect Logic
-  socket.on("disconnect", () => {
-    console.log("User Disconnected (Whiteboard):", socket.id);
-
+  // leave Logic
+  socket.on("leaveRoom", () => {
+    console.log("User requested to leave room:", socket.id);
+  
     for (const [roomId, room] of whiteboardRooms.entries()) {
       const userIndex = room.users.findIndex((u) => u.socketId === socket.id);
-
+  
       if (userIndex !== -1) {
         const removedUser = room.users[userIndex];
         room.users.splice(userIndex, 1);
-
-        console.log(`User ${removedUser.userName} removed from room: ${roomId}`);
-
-        // 🚨 If host left
+  
+        console.log(`User ${removedUser.userName} left room: ${roomId}`);
+  
         if (removedUser.host) {
+          // 🚨 Host left — close room
           whiteboardNamespace.to(roomId).emit("roomClosed");
           whiteboardRooms.delete(roomId);
           console.log(`Room ${roomId} closed by host`);
@@ -170,18 +170,42 @@ whiteboardNamespace.on("connection", (socket) => {
           whiteboardNamespace.to(roomId).emit("roomUserList", {
             users: room.users,
           });
-
-          // Optional: delete room if no users remain
-          // if (room.users.length === 0) {
-          //   whiteboardRooms.delete(roomId);
-          //   console.log(`Room ${roomId} deleted (no users left)`);
-          // }
+          
         }
-
-        break; // exit loop once user is found
+  
+        break;
       }
     }
   });
+  
+  // Disconnect Logic
+  socket.on("disconnect", () => {
+    console.log("User Disconnected (Whiteboard):", socket.id);
+  
+    for (const [roomId, room] of whiteboardRooms.entries()) {
+      const userIndex = room.users.findIndex((u) => u.socketId === socket.id);
+  
+      if (userIndex !== -1) {
+        const removedUser = room.users[userIndex];
+        room.users.splice(userIndex, 1);
+  
+        console.log(`User ${removedUser.userName} removed from room: ${roomId}`);
+  
+        // Just notify remaining users
+        whiteboardNamespace.to(roomId).emit("roomUserList", {
+          users: room.users,
+        });
+
+        if (room.users.length === 0) {
+          whiteboardRooms.delete(roomId);
+          console.log(`Room ${roomId} deleted (no users left)`);
+        }
+  
+        break;
+      }
+    }
+  });
+  
 });
 
 export { io, app, server }; 

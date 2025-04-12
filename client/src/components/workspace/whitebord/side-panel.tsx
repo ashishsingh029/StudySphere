@@ -39,16 +39,17 @@ export default function SidePanel({
   const navigate = useNavigate()
 
   const leaveRoom = () => {
-    socket.disconnect();
-    toast({
-      title: "Left the room",
-      variant: "destructive",
-    });
+    socket.emit("leaveRoom");
+  
     setTimeout(() => {
+      toast({
+        title: "Left the room",
+        variant: "destructive",
+      });
       navigate(`/workspace/${workspaceId}`);
-    }, 500);
-
-  }
+    }, 300);
+  };
+  
 
   return (
     <div
