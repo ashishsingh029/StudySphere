@@ -51,9 +51,6 @@ export const getCurrentUserQueryFn =
     return response.data;
   };
 
-//********* WORKSPACE ****************
-//************* */
-
 export const createWorkspaceMutationFn = async (
   data: CreateWorkspaceType
 ): Promise<CreateWorkspaceResponseType> => {
@@ -117,8 +114,6 @@ export const deleteWorkspaceMutationFn = async (
   return response.data;
 };
 
-//*******MEMBER ****************
-
 export const invitedUserJoinWorkspaceMutationFn = async (
   iniviteCode: string
 ): Promise<{
@@ -153,8 +148,6 @@ export const deleteMemberMutationFn = async ({
   return response.data;
 };
 
-//********* */
-//********* PROJECTS
 export const createProjectMutationFn = async ({
   workspaceId,
   data,
@@ -221,9 +214,6 @@ export const deleteProjectMutationFn = async ({
   return response.data;
 };
 
-//*******TASKS ********************************
-//************************* */
-
 export const createTaskMutationFn = async ({
   workspaceId,
   projectId,
@@ -235,17 +225,6 @@ export const createTaskMutationFn = async ({
   );
   return response.data;
 };
-
-// export const getTaskByIdQueryFn = async ({
-//   workspaceId,
-//   projectId,
-//   taskId,
-// }: EditTaskPayloadType) => {
-//   await API.get(
-//     `task/${taskId}/project/${projectId}/workspace/${workspaceId}/delete`
-//   );
-//   // console.log(response);
-// };
 
 export const getAllTasksQueryFn = async ({
   workspaceId,
@@ -305,9 +284,6 @@ export const editTaskMutationFn = async ({
   return response.data;
 };
 
-//*******CHAT ********************************
-//************************* */
-
 export const getMessagesByWorkspaceIdQueryFn = async ({
   workspaceId,
 }: {
@@ -337,6 +313,5 @@ export const sendMessageInWorkspaceQueryFn = async ({
 
 export const clearChatQueryFn = async (workspaceId: string): Promise<any> => {
   const response = await API.delete(`chat/workspace/${workspaceId}`);
-  // console.log("Response check in api");
   return response.data;
 };

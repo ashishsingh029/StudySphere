@@ -1,4 +1,3 @@
-// components/SidePanel.tsx
 import { Button } from "@/components/ui/button";
 import {
   Tabs,
@@ -9,7 +8,6 @@ import {
 import { toast } from "@/hooks/use-toast";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { socket } from "@/lib/whiteboard-socket";
-// import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Chat from "./chat";
 
@@ -21,16 +19,14 @@ interface User {
 
 interface SidePanelProps {
   showPanel: boolean;
-  // setShowPanel: (value: boolean) => void;
   panelRef: React.RefObject<HTMLDivElement>;
-  users: User[]; // 👈 added users prop
+  users: User[]; 
 }
 
 
 
 export default function SidePanel({
   showPanel,
-  // setShowPanel,
   panelRef,
   users,
 }: SidePanelProps) {

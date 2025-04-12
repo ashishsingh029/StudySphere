@@ -7,25 +7,25 @@ export const customEmojis = [
         id: "📈",
         name: "Growth Chart",
         keywords: ["chart", "growth", "business"],
-        skins: [{ src: "./growth-chart.png" }], // Replace with actual image
+        skins: [{ src: "./growth-chart.png" }], 
       },
       {
         id: "📊",
         name: "Bar Chart",
         keywords: ["chart", "bar", "statistics"],
-        skins: [{ src: "./bar-chart.png" }], // Replace with actual image
+        skins: [{ src: "./bar-chart.png" }], 
       },
       {
         id: "⚙️",
         name: "Gears",
         keywords: ["settings", "tools", "automation"],
-        skins: [{ src: "./gears.png" }], // Replace with actual image
+        skins: [{ src: "./gears.png" }], 
       },
       {
         id: "💼",
         name: "Briefcase",
         keywords: ["work", "business", "office"],
-        skins: [{ src: "./briefcase.png" }], // Replace with actual image
+        skins: [{ src: "./briefcase.png" }],
       },
       {
         id: "📅",

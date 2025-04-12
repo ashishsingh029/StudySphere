@@ -10,7 +10,6 @@ import path from "path";
 import passport from "passport";
 import authRoutes from "./routes/auth.route";
 import userRoutes from "./routes/user.route";
-// import isAuthenticated from "./middlewares/isAuthenticated.middleware";
 import { passportAuthenticateJWT } from "./config/passport.config";
 import workspaceRoutes from "./routes/workspace.route";
 import memberRoutes from "./routes/member.route";
@@ -20,8 +19,6 @@ import messageRoutes from "./routes/message.route";
 import { app, server } from "./config/socket.config";
 
 const BASE_PATH = config.BASE_PATH;
-
-// ✅ No need to define `__dirname` — it's available in CommonJS
 
 // Increased request size limit (Fix for "PayloadTooLargeError")
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -35,22 +32,7 @@ app.use(
   })
 );
 
-// Session does not work in production in cross-domain
-// app.use(
-//   session({
-//     secret: config.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       maxAge: 24 * 60 * 60 * 1000, // 1 day
-//       httpOnly: true,
-//       sameSite: "lax",
-//     },
-//   })
-// );
-
 app.use(passport.initialize());
-// app.use(passport.session());
 
 app.use(`${BASE_PATH}/auth`, authRoutes);
 app.use(`${BASE_PATH}/user`, passportAuthenticateJWT, userRoutes);

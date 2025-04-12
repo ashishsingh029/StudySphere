@@ -65,7 +65,6 @@ export default function CreateTaskForm(props: {
   const projects = data?.projects || [];
   const members = memberData?.members || [];
 
-  //Workspace Projects
   const projectOptions = projects?.map((project) => {
     return {
       label: (
@@ -78,7 +77,6 @@ export default function CreateTaskForm(props: {
     };
   });
 
-  // Workspace Memebers
   const membersOptions = members?.map((member) => {
     const name = member.userId?.name || "Unknown";
     const initials = getAvatarFallbackText(name);
@@ -136,7 +134,7 @@ export default function CreateTaskForm(props: {
   });
 
   const taskStatusList = Object.values(TaskStatusEnum);
-  const taskPriorityList = Object.values(TaskPriorityEnum); // ["LOW", "MEDIUM", "HIGH", "URGENT"]
+  const taskPriorityList = Object.values(TaskPriorityEnum);
 
   const statusOptions = transformOptions(taskStatusList);
   const priorityOptions = transformOptions(taskPriorityList);
@@ -365,8 +363,8 @@ export default function CreateTaskForm(props: {
                           disabled={
                             (date) =>
                               date <
-                                new Date(new Date().setHours(0, 0, 0, 0)) || // Disable past dates
-                              date > new Date("2100-12-31") //Prevent selection beyond a far future date
+                                new Date(new Date().setHours(0, 0, 0, 0)) || 
+                              date > new Date("2100-12-31") 
                           }
                           initialFocus
                           defaultMonth={new Date()}

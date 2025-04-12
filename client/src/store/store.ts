@@ -29,8 +29,8 @@ export const useStoreBase = create<StoreType>()(
         }))
       ),
       {
-        name: "session-storage", // Name of the item in localStorage (or sessionStorage)
-        storage: createJSONStorage(() => sessionStorage), // (optional) by default it's localStorage
+        name: "session-storage", 
+        storage: createJSONStorage(() => sessionStorage), // by default it's localStorage
       }
     )
   )

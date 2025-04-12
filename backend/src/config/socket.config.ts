@@ -53,7 +53,6 @@ const whiteboardNamespace = io.of("/whiteboard");
 whiteboardNamespace.on("connection", (socket) => {
   console.log("User Joined (Whiteboard):", socket.id);
 
-  // Create Room
   socket.on("createRoom", (data, callback) => {
     const { roomName, roomId, workspaceId, userId, userName, host } = data;
 
@@ -66,14 +65,14 @@ whiteboardNamespace.on("connection", (socket) => {
       roomId,
       workspaceId,
       creator: { userId, userName, host },
-      users: [], // Empty at first
+      users: [],  
     });
 
     console.log(`Room created: ${roomId}`);
     callback({ success: true });
   });
 
-  // Join Room
+  
   socket.on("joinRoom", (data, callback) => {
     const { roomId, roomName, workspaceId, userId, userName, host } = data;
     const room = whiteboardRooms.get(roomId);
@@ -88,7 +87,6 @@ whiteboardNamespace.on("connection", (socket) => {
 
     const alreadyInRoom = room.users.some((user) => user.userId === userId);
 
-    // Host joins → add creator to beginning of array
     if (room.creator.userId === userId && !alreadyInRoom) {
       room.users.unshift({
         ...room.creator,
@@ -96,7 +94,7 @@ whiteboardNamespace.on("connection", (socket) => {
       });
     }
 
-    // Participant joins
+   
     else if (!alreadyInRoom) {
       room.users.push({
         userId,
@@ -116,7 +114,7 @@ whiteboardNamespace.on("connection", (socket) => {
     callback({ success: true });
   });
 
-  // Get Room Users
+  
   socket.on("getRoomUsers", (roomId, callback) => {
     const room = whiteboardRooms.get(roomId);
     if (room) {
@@ -126,18 +124,15 @@ whiteboardNamespace.on("connection", (socket) => {
     }
   });
 
-  // Whiteboard Drawing Sync
   socket.on("whiteboard-changes", ({ roomId, snapshot }) => {
     if (snapshot) {
       socket.to(roomId).emit("whiteboard-changes", snapshot);
     }
   });
 
-  // Message Handling
   socket.on("message", (data) => {
     const { roomId, message, userId, userName} = data;
 
-    // Broadcast message to all users in the room except the sender
     socket.broadcast.to(roomId).emit("message", {
       message,
       userId,

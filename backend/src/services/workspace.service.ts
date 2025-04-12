@@ -10,9 +10,7 @@ import { TaskStatusEnum } from "../enums/task.enum";
 import ProjectModel from "../models/project.model";
 import MessageModel from "../models/message.model";
 
-//********************************
-// CREATE NEW WORKSPACE
-//**************** **************/
+
 export const createWorkspaceService = async (
   userId: string,
   body: {
@@ -59,16 +57,12 @@ export const createWorkspaceService = async (
   };
 };
 
-//********************************
-// GET WORKSPACES USER IS A MEMBER
-//**************** **************/
 export const getAllWorkspacesUserIsMemberService = async (userId: string) => {
   const memberships = await MemberModel.find({ userId })
     .populate("workspaceId")
     .select("-password")
     .exec();
 
-  // Extract workspace details from memberships
   const workspaces = memberships.map((membership) => membership.workspaceId);
 
   return { workspaces };
@@ -95,12 +89,8 @@ export const getWorkspaceByIdService = async (workspaceId: string) => {
   };
 };
 
-//********************************
-// GET ALL MEMEBERS IN WORKSPACE
-//**************** **************/
 
 export const getWorkspaceMembersService = async (workspaceId: string) => {
-  // Fetch all members of the workspace
 
   const members = await MemberModel.find({
     workspaceId,
@@ -174,9 +164,6 @@ export const changeMemberRoleService = async (
   };
 };
 
-//********************************
-// UPDATE WORKSPACE
-//**************** **************/
 export const updateWorkspaceByIdService = async (
   workspaceId: string,
   name: string,
@@ -187,7 +174,6 @@ export const updateWorkspaceByIdService = async (
     throw new NotFoundException("Workspace not found");
   }
 
-  // Update the workspace details
   workspace.name = name || workspace.name;
   workspace.description = description || workspace.description;
   await workspace.save();
@@ -212,7 +198,6 @@ export const deleteWorkspaceService = async (
       throw new NotFoundException("Workspace not found");
     }
 
-    // Check if the user owns the workspace
     if (workspace.owner.toString() !== userId.toString()) {
       throw new BadRequestException(
         "You are not authorized to delete this workspace"
@@ -247,12 +232,10 @@ export const deleteWorkspaceService = async (
       workspaceId: workspaceId,
     }).session(session);
 
-    // Update the user's currentWorkspace if it matches the deleted workspace
     if (user?.currentWorkspace?.equals(workspaceId)) {
       const memberWorkspace = await MemberModel.findOne({ userId }).session(
         session
       );
-      // Update the user's currentWorkspace
       user.currentWorkspace = memberWorkspace
         ? memberWorkspace.workspaceId
         : null;

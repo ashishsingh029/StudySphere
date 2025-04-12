@@ -20,7 +20,6 @@ export type registerType = {
   password: string;
 };
 
-// USER TYPE
 export type UserType = {
   _id: string;
   name: string;
@@ -43,8 +42,6 @@ export type CurrentUserResponseType = {
   user: UserType;
 };
 
-//******** */ WORLSPACE TYPES ****************
-// ******************************************
 export type WorkspaceType = {
   _id: string;
   name: string;
@@ -164,10 +161,7 @@ export type RoleType = {
   _id: string;
   name: string;
 };
-// *********** MEMBER ****************
 
-//******** */ PROJECT TYPES ****************
-//****************************************** */
 export type ProjectType = {
   _id: string;
   name: string;
@@ -207,7 +201,6 @@ export type EditProjectPayloadType = {
   };
 };
 
-//ALL PROJECTS IN WORKSPACE TYPE
 export type AllProjectPayloadType = {
   workspaceId: string;
   pageNumber?: number;
@@ -222,14 +215,10 @@ export type AllProjectResponseType = {
   pagination: PaginationType;
 };
 
-// SINGLE PROJECT IN WORKSPACE TYPE
 export type ProjectByIdPayloadType = {
   workspaceId: string;
   projectId: string;
 };
-
-//********** */ TASK TYPES ************************
-//************************************************* */
 
 export type CreateTaskPayloadType = {
   workspaceId: string;

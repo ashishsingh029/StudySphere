@@ -8,12 +8,12 @@ export const formatMessageTime = (timestamp: string | number | Date) => {
     const timeOptions: Intl.DateTimeFormatOptions = {
       hour: "numeric",
       minute: "numeric",
-      hour12: true, // AM/PM format
+      hour12: true, 
       timeZone: "Asia/Kolkata", // Ensure IST timezone
     };
   
     if (isToday) {
-      return date.toLocaleTimeString("en-IN", timeOptions); // Example: "09:30 AM"
+      return date.toLocaleTimeString("en-IN", timeOptions); 
     } else if (isYesterday) {
       return `Yesterday at ${date.toLocaleTimeString("en-IN", timeOptions)}`;
     } else {

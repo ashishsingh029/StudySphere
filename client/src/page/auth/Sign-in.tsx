@@ -67,7 +67,6 @@ const SignIn = () => {
           description: data.message,
           variant: "success",
         });
-        // console.log("Signin success , navigating to: ", user.currentWorkspace);
         navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
       },
       onError: (error: any) => {
