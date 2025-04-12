@@ -19,7 +19,6 @@ const LogoutDialog = (props: {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { isOpen, setIsOpen } = props;
-  // const [ isPending, setIsPending ] = useState<boolean>(false);
   const { clearAccessToken } = useStore();
   const queryClient = useQueryClient();
 
@@ -36,7 +35,6 @@ const LogoutDialog = (props: {
         variant: "success",
       });
       clearAccessToken();
-      // navigate("/");
       setIsOpen(false);
     },
     onError: (error:any) => {
@@ -48,35 +46,10 @@ const LogoutDialog = (props: {
     },
   });
 
-  // Handle logout action
   const handleLogout = useCallback(() => {
     if (isPending) return;
     mutate();
   }, [isPending, mutate]);
-
-  // const handleLogout = async () => {
-  //   setIsPending(true);
-  //   try {
-  //     logoutMutationFn();
-  //     clearAccessToken();
-  //     toast({
-  //       title: "Success",
-  //       description: "Logout Successful",
-  //       variant: "success",
-  //     });
-  //     // navigate("/")
-  //     await new Promise((resolve) => setTimeout(resolve, 1500)); // Wait for 1.5 seconds
-  //     window.location.href = '/';
-  //   } catch (error) {
-  //     toast({
-  //       title: "Error",
-  //       description: "Unable to Logout",
-  //       variant: "destructive",
-  //     });
-  //   } finally {
-  //     setIsPending(false);
-  //   }
-  // };
 
   return (
     <>

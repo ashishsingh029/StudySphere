@@ -7,7 +7,6 @@ import { formatMessageTime } from "@/lib/dateFormatter";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Helper Functions
 const getFileExtension = (url: string) =>
   url.split(".").pop()?.toLowerCase() || "";
 

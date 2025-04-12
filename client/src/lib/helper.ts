@@ -31,8 +31,6 @@ export const getAvatarColor = (initials: string): string => {
     "bg-orange-500 text-black",
     "bg-gray-500 text-white",
   ];
-
-  // Simple hash to map initials to a color index
   const hash = initials
     .split("")
     .reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -46,6 +44,6 @@ export const getAvatarFallbackText = (name: string) => {
     .split(" ")
     .map((n) => n.charAt(0).toUpperCase())
     .join("")
-    .slice(0, 2); // Ensure only two initials
+    .slice(0, 2);
   return initials || "NA";
 };

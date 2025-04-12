@@ -19,7 +19,7 @@ interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   pageNumber: number;
   pageSize: number;
-  totalCount: number; // Total rows from the API
+  totalCount: number; 
   onPageChange?: (page: number) => void;
   onPageSizeChange?: (size: number) => void;
 }
@@ -33,17 +33,16 @@ export function DataTablePagination<TData>({
   onPageSizeChange,
 }: DataTablePaginationProps<TData>) {
   const pageIndex = table.getState().pagination.pageIndex;
-  //const pageSize = table.getState().pagination.pageSize;
   const pageCount = Math.ceil(totalCount / pageSize);
 
   const handlePageSizeChange = (size: number) => {
     table.setPageSize(size);
-    onPageSizeChange?.(size); // Trigger external handler if provided
+    onPageSizeChange?.(size);
   };
 
   const handlePageChange = (index: number) => {
-    table.setPageIndex(index); // Update table state
-    onPageChange?.(index + 1); // Trigger external handler if provided
+    table.setPageIndex(index); 
+    onPageChange?.(index + 1); 
   };
 
   return (

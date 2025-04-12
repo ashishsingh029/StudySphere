@@ -48,10 +48,6 @@ export default function Canva() {
     const isInRoom = users.some(u => u.userId === user._id);
 
     if (!isInRoom) {
-      // toast({
-      //   title: "Left the room",
-      //   variant: "destructive",
-      // });
       navigate(`/workspace/${workspaceId}`);
     }
   }, [users, user?._id]);
@@ -225,7 +221,6 @@ export default function Canva() {
 
       <SidePanel
         showPanel={showPanel}
-        // setShowPanel={setShowPanel}
         panelRef={panelRef}
         users={users}
       />

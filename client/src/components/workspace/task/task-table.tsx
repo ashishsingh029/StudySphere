@@ -68,7 +68,6 @@ const TaskTable = () => {
     setPageNumber(page);
   };
 
-  // Handle page size changes
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
   };
@@ -116,7 +115,6 @@ const DataTableFilterToolbar: FC<DataTableFilterToolbarProps> = ({
   const projects = data?.projects || [];
   const members = memberData?.members || [];
 
-  //Workspace Plans
   const projectOptions = projects?.map((project) => {
     return {
       label: (
@@ -129,7 +127,6 @@ const DataTableFilterToolbar: FC<DataTableFilterToolbarProps> = ({
     };
   });
 
-  // Workspace Memebers
   const assigneesOptions = members?.map((member) => {
     const name = member.userId?.name || "Unknown";
     const initials = getAvatarFallbackText(name);

@@ -30,7 +30,6 @@ export const loginOrCreateAccountService = async (data: {
     let user = await UserModel.findOne({ email }).session(session);
 
     if (!user) {
-      // Create a new user if it doesn't exist
       user = new UserModel({
         email,
         name: displayName,
@@ -45,7 +44,6 @@ export const loginOrCreateAccountService = async (data: {
       });
       await account.save({ session });
 
-      // 3. Create a new workspace for the new user
       const workspace = new WorkspaceModel({
         name: `My Workspace`,
         description: `Workspace created for ${user.name}`,
@@ -116,7 +114,6 @@ export const registerUserService = async (body: {
     });
     await account.save({ session });
 
-    // Create a new workspace for the new user
     const workspace = new WorkspaceModel({
       name: `My Workspace`,
       description: `Workspace created for ${user.name}`,

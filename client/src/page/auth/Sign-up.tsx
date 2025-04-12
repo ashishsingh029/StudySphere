@@ -65,7 +65,6 @@ const SignUp = () => {
         });
       },
       onError: (error: any) => {
-        // console.log(error);
         toast({
           title: "Error",
           description: error.response.data.message,

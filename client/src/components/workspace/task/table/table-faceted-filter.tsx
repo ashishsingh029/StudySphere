@@ -30,8 +30,8 @@ interface DataTableFacetedFilterProps {
   }[];
   disabled?: boolean;
   multiSelect?: boolean;
-  selectedValues: string[]; // New prop
-  onFilterChange: (values: string[]) => void; // New callback prop
+  selectedValues: string[]; 
+  onFilterChange: (values: string[]) => void; 
 }
 
 export function DataTableFacetedFilter({
@@ -111,11 +111,11 @@ export function DataTableFacetedFilter({
                     onSelect={() => {
                       if (multiSelect) {
                         const updatedValues = isSelected
-                          ? selectedValues.filter((val) => val !== option.value) // Remove value
-                          : [...selectedValues, option.value]; // Add value
+                          ? selectedValues.filter((val) => val !== option.value)  
+                          : [...selectedValues, option.value]; 
                         onFilterChange(updatedValues);
                       } else {
-                        onFilterChange(isSelected ? [] : [option.value]); // Single select
+                        onFilterChange(isSelected ? [] : [option.value]); 
                         onClose();
                       }
                     }}
@@ -145,7 +145,7 @@ export function DataTableFacetedFilter({
                 <CommandSeparator />
                 <CommandGroup className="sticky bottom-0 align-bottom bg-white">
                   <CommandItem
-                    onSelect={() => onFilterChange([])} // Clear all filters
+                    onSelect={() => onFilterChange([])}  
                     className="justify-center text-center"
                   >
                     Clear filters

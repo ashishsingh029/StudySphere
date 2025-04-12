@@ -18,7 +18,6 @@ import { useAuthContext } from "@/context/auth-provider";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { socket } from "@/lib/whiteboard-socket";
 
-// Schema
 const formSchema = z.object({
   name: z.string().trim().min(1, {
     message: "Room name is required",

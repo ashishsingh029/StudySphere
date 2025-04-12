@@ -25,7 +25,7 @@ import { Permissions } from "@/constant";
 import { DeleteMemberDialog } from "./delete-member-dialog";
 
 const AllMembers = () => {
-  const { user, hasPermission } = useAuthContext(); // Keep hasPermission logic
+  const { user, hasPermission } = useAuthContext(); 
   const canChangeMemberRole = hasPermission(Permissions.CHANGE_MEMBER_ROLE);
 
   const queryClient = useQueryClient();
