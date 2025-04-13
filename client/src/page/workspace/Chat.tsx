@@ -30,7 +30,7 @@ const Chat = () => {
   }, [user, socket, workspaceId]);
 
   return (
-    <Card className="flex flex-1 flex-col pt-2 sm:h-[calc(88vh)] h-[calc(83vh)]">
+    <Card className="flex flex-1 flex-col pt-2 sm:h-[calc(88vh)] h-[calc(84vh)]">
       {isMessagesLoading ? (
         <ChatSkeleton />
       ) : (
