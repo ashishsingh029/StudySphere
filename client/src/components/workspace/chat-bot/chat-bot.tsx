@@ -105,7 +105,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, setIsOpen }) => {
   return (
     <div className="fixed bottom-1 h-screen right-0 z-50">
       {isOpen && (
-        <div className="w-[80vw] h-screen md:w-[36vw]" ref={chatbotRef}>
+        <div className="w-[80vw] h-[70vh] md:h-screen md:w-[36vw]" ref={chatbotRef}>
           <Card className="w-full h-full flex flex-col shadow-2xl">
             <div className="px-4 py-2 flex items-center justify-between border-b bg-slate-700 text-white">
               <span className="text-base font-medium">How can I help you?</span>
