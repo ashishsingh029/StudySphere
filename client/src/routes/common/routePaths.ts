@@ -5,7 +5,7 @@ export const isAuthRoute = (pathname: string): boolean => {
 export const AUTH_ROUTES = {
   SIGN_IN: "/",
   SIGN_UP: "/sign-up",
-  GOOGLE_OAUTH_CALLBACK: "/google/oauth/callback",
+  GOOGLE_OAUTH_CALLBACK: "/google/callback",
 };
 
 export const PROTECTED_ROUTES = {
@@ -14,7 +14,10 @@ export const PROTECTED_ROUTES = {
   MEMBERS: "/workspace/:workspaceId/members",
   SETTINGS: "/workspace/:workspaceId/settings",
   PROJECT_DETAILS: "/workspace/:workspaceId/project/:projectId",
-  CHAT:"/workspace/:workspaceId/chat"
+  CHAT:"/workspace/:workspaceId/chat",
+  WHITEBOARD: "/workspace/:workspaceId/whiteboard/:roomId",
+  WHITEBOARD_CREATE: "/workspace/:workspaceId/whiteboard/create",
+  WHITEBOARD_JOIN: "/workspace/:workspaceId/whiteboard/join"
 };
 
 export const BASE_ROUTE = {

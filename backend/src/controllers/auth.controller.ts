@@ -17,9 +17,6 @@ export const googleLoginCallback = asyncHandler(
         `${config.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`
       );
     }
-    // return res.redirect(
-    // `${config.FRONTEND_ORIGIN}/workspace/${currentWorkspace}`
-    // );
     return res.redirect(
       `${config.FRONTEND_GOOGLE_CALLBACK_URL}?status=success&access_token=${jwt}&current_workspace=${currentWorkspace}`
     );
@@ -58,16 +55,6 @@ export const loginController = asyncHandler(
           });
         }
 
-        // req.logIn(user, (err) => {
-        //   if (err) {
-        //     return next(err);
-        //   }
-
-        //   return res.status(HTTPSTATUS.OK).json({
-        //     message: "Logged in successfully",
-        //     user,
-        //   });
-        // });
         const accessToken = signJwtToken({ userId: user._id });
         return res.status(HTTPSTATUS.OK).json({
           message: "Logged in successfully",
@@ -78,40 +65,3 @@ export const loginController = asyncHandler(
     )(req, res, next);
   }
 );
-
-// export const logOutController = asyncHandler(
-//   async (req: Request, res: Response) => {
-//     console.log("Logging out...");
-
-//     req.logout((err) => {
-//       if (err) {
-//         console.error("Logout error:", err);
-//         return res.status(500).json({ error: "Failed to log out" });
-//       }
-
-//       if (!req.session) {
-//         return res
-//           .status(200)
-//           .json({ message: "Logged out, no active session" });
-//       }
-
-//       req.session.destroy((err) => {
-//         if (err) {
-//           console.error("Session destruction error:", err);
-//           return res.status(500).json({ error: "Failed to destroy session" });
-//         }
-
-//         // Explicitly clear the session cookie
-//         res.clearCookie("connect.sid", {
-//           path: "/",
-//           httpOnly: true,
-//           secure: config.NODE_ENV === "production",
-//           sameSite: "lax",
-//         });
-
-//         console.log("Session destroyed, cookie cleared");
-//         return res.status(200).json({ message: "Logged out successfully" });
-//       });
-//     });
-//   }
-// );

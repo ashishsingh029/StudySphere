@@ -65,7 +65,7 @@ export const getColumns = (projectId?: string): ColumnDef<TaskType>[] => {
       },
     },
     ...(projectId
-      ? [] // If planId exists, exclude the "Plan" column
+      ? [] 
       : [
           {
             accessorKey: "project",

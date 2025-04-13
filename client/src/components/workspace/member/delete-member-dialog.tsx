@@ -26,9 +26,6 @@ export function DeleteMemberDialog({ member }: { member?: MemberType }) {
           queryClient.invalidateQueries({ queryKey: ["members", workspaceId] });
 
           queryClient.invalidateQueries({ queryKey: ["workspace",workspaceId] });
-          // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
-          // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
-          // queryClient.invalidateQueries({ queryKey: ["members", member?._id] });
           toast({
             title: "Success",
             description: data.message,

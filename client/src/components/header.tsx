@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { Bot } from "lucide-react";
 import { useState } from "react";
-import ChatBot from "./workspace/Chat-Bot/chat-bot";
+import ChatBot from "./workspace/chat-bot/chat-bot";
 
 const Header = () => {
   const location = useLocation();
@@ -27,6 +27,8 @@ const Header = () => {
     if (pathname.includes("/tasks")) return "Tasks";
     if (pathname.includes("/members")) return "Members";
     if (pathname.includes("/chat")) return "Chat";
+    if(pathname.includes("/whiteboard/create")) return "Create Whiteboard"
+    if(pathname.includes("/whiteboard/join")) return "Join Whiteboard"
     return null; // Default label
   };
 

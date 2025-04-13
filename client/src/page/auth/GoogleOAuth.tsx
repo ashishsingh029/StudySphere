@@ -15,7 +15,6 @@ const GoogleOAuth = () => {
     if(accessToken) {
       setAccessToken(accessToken);
       if(currentWorkspace) {
-        // console.log("Navigating to workspace");
         navigate(`/workspace/${currentWorkspace}`);
       } else {
         navigate(`/`);

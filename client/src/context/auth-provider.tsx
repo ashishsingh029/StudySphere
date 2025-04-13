@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import usePermissions from "@/hooks/use-permissions";
 import { PermissionType } from "@/constant";
 
-// Define the context shape
 type AuthContextType = {
   user?: UserType;
   workspace?: WorkspaceType;
@@ -29,6 +28,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   const workspaceId = useWorkspaceId();
 
+  
+
   const {
     data: authData,
     error: authError,
@@ -37,8 +38,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     refetch: refetchAuth,
   } = useAuth();
   const user = authData?.user;
-  // console.log("Authdata in auth-provider: ", authData);
-  // console.log("user in auth-provider: ", authData);
   const {
     data: workspaceData,
     isLoading: workspaceLoading,
@@ -51,7 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (workspaceError) {
       if (workspaceError?.errorCode === "ACCESS_UNAUTHORIZED") {
-        navigate("/"); // Redirect if the user is not a member of the workspace
+        navigate("/"); 
       }
     }
   }, [navigate, workspaceError]);
@@ -61,6 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const hasPermission = (permission: PermissionType): boolean => {
     return permissions.includes(permission);
   };
+
 
   return (
     <AuthContext.Provider
@@ -81,7 +81,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (!context) {

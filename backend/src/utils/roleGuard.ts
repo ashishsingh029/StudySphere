@@ -7,8 +7,6 @@ export const roleGuard = (
   requiredPermissions: PermissionType[]
 ) => {
   const permissions = RolePermissions[role];
-  // If the role doesn't exist or lacks required permissions, throw an exception
-
   const hasPermission = requiredPermissions.every((permission) =>
     permissions.includes(permission)
   );

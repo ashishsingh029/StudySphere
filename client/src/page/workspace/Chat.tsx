@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
-// import ChatHeader from "@/components/workspace/Chat/chat-header";
 import ChatContent from "@/components/workspace/Chat/chat-content";
 import ChatFooter from "@/components/workspace/Chat/chat-footer";
 import { ChatSkeleton } from "@/components/skeleton-loaders/chat-skeleton";
 import { useChatStore } from "@/store/use-chat-store";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { useAuthContext } from "@/context/auth-provider";
-// import chatbgImage from "../../assets/chatbg.jpg";
 
 const Chat = () => {
   const { isMessagesLoading, getMessages, setupSocketListeners } = useChatStore();
@@ -23,7 +21,6 @@ const Chat = () => {
 
   useEffect(() => {
     if (!user || !socket || !workspaceId) {
-      // console.log(user, socket, workspaceId);
       return;
     }
     socket.emit("joinWorkspace", workspaceId);

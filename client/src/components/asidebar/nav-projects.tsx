@@ -119,7 +119,7 @@ export function NavProjects() {
             </button>
           </PermissionsGuard>
         </SidebarGroupLabel>
-        <SidebarMenu className="h-[36vh] scrollbar overflow-y-auto overflow-x-hidden pb-2">
+        <SidebarMenu className="h-[18vh] scrollbar overflow-y-auto overflow-x-hidden pb-2">
           {isError ? <div>Error occured</div> : null}
           {isPending ? (
             <Loader
