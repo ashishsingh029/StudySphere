@@ -29,6 +29,7 @@ const Header = () => {
     if (pathname.includes("/chat")) return "Chat";
     if(pathname.includes("/whiteboard/create")) return "Create Whiteboard"
     if(pathname.includes("/whiteboard/join")) return "Join Whiteboard"
+    if(pathname.includes("/whiteboard")) return "Whiteboard"
     return null; // Default label
   };
 
