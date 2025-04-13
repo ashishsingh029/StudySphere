@@ -62,7 +62,7 @@ const LogoutDialog = (props: {
               again to access your account.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="flex-row justify-center sm:justify-end space-x-2">
             <Button disabled={isPending} type="button" onClick={handleLogout}>
               {isPending && <Loader className="animate-spin" />}
               Sign out
