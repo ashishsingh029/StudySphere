@@ -225,12 +225,12 @@ export default function Canva() {
         }}
       />
 
-      <div className="absolute top-1 right-1 sm:bottom-12 sm:top-auto sm:right-auto sm:ml-1 z-50 ">
+      <div className="absolute top-1 right-1 sm:bottom-12 sm:top-auto sm:right-auto z-50 ">
         <Button
           ref={buttonRef}
           onClick={() => setShowPanel((prev) => !prev)}
-          className="text-base bg-slate-400
-          hover:bg-slate-600 rounded-md font-semibold"
+          className="text-base bg-slate-600
+          hover:bg-slate-400 sm:rounded-none sm:rounded-r-md font-semibold"
         >
           <p>Info</p>
         </Button>
