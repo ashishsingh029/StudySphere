@@ -103,9 +103,9 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <div className="fixed bottom-1 h-screen right-0 z-50">
+    <div className="fixed bottom-1 h-[91vh] md:h-screen right-0 z-50">
       {isOpen && (
-        <div className="w-[80vw] h-[70vh] md:h-screen md:w-[36vw]" ref={chatbotRef}>
+        <div className="w-[80vw] h-screen md:w-[36vw]" ref={chatbotRef}>
           <Card className="w-full h-full flex flex-col shadow-2xl">
             <div className="px-4 py-2 flex items-center justify-between border-b bg-slate-700 text-white">
               <span className="text-base font-medium">How can I help you?</span>
@@ -151,7 +151,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, setIsOpen }) => {
               <Button
                 onClick={sendMessage}
                 size="icon"
-                className="bg-green-500 hover:bg-green-700"
+                className="bg-green-600 hover:bg-green-700"
               >
                 <Send size={20} />
               </Button>
