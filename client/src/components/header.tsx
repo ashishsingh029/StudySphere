@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import { Bot } from "lucide-react";
 import { useState } from "react";
-import ChatBot from "./workspace/Chat-Bot/chat-bot";
+import ChatBot from "./workspace/chat-bot/chat-bot";
 
 const Header = () => {
   const location = useLocation();
