@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Send, ArrowRight } from "lucide-react";
-import { getGeminiResponse } from "@/lib/gemini-service";
 import profanity from "@devshubham/clean-speech-hindi";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getGeminiResponse } from "@/lib/gemini-service";
 
 interface ChatBotProps {
   isOpen: boolean;

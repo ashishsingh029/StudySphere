@@ -1,11 +1,11 @@
 import { useChatStore } from "@/store/use-chat-store";
 import { useEffect, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CardContent } from "@/components/ui/card";
 import { useAuthContext } from "@/context/auth-provider";
 import { formatMessageTime } from "@/lib/dateFormatter";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const getFileExtension = (url: string) =>
   url.split(".").pop()?.toLowerCase() || "";
