@@ -107,11 +107,10 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, setIsOpen }) => {
       {isOpen && (
         <div className="w-[80vw] h-full md:w-[36vw]" ref={chatbotRef}>
           <Card className="w-full h-full flex flex-col shadow-2xl">
-            <div className="px-4 py-2 flex items-center justify-between border-b bg-slate-300">
+            <div className="px-4 py-2 flex items-center justify-between border-b bg-slate-700 text-white">
               <span className="text-base font-medium">How can I help you?</span>
               <Button
                 variant="ghost"
-                className="hover:bg-slate-300 "
                 size="sm"
                 onClick={() => setIsOpen(false)}
               >
@@ -124,7 +123,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, setIsOpen }) => {
                 msg.sender === "bot" ? (
                   <div
                     key={index}
-                    className="bg-secondary bg-slate-500 text-white text-sm py-2 px-3 my-3 rounded-r-lg rounded-bl-xl w-fit max-w-[70%]"
+                    className="bg-secondary bg-slate-600 text-white text-sm py-2 px-3 my-3 rounded-r-lg rounded-bl-xl w-fit max-w-[70%]"
                     dangerouslySetInnerHTML={{ __html: msg.text }}
                   />
                 ) : (
@@ -141,7 +140,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, setIsOpen }) => {
               )}
             </ScrollArea>
 
-            <div className="flex items-center gap-2 border-t p-1 bg-blue-200">
+            <div className="flex items-center gap-2 border-t p-1 bg-blue-700">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -152,7 +151,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isOpen, setIsOpen }) => {
               <Button
                 onClick={sendMessage}
                 size="icon"
-                className="bg-green-600 hover:bg-green-700"
+                className="bg-green-500 hover:bg-green-700"
               >
                 <Send size={20} />
               </Button>
