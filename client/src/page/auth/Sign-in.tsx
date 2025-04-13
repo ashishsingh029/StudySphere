@@ -178,7 +178,7 @@ const SignIn = () => {
                       Don&apos;t have an account?{" "}
                       <Link
                         to="/sign-up"
-                        className="underline underline-offset-4"
+                        className="underline underline-offset-4 text-blue-500 font-semibold"
                       >
                         Sign up
                       </Link>

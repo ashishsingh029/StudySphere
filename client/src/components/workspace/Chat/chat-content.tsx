@@ -31,7 +31,7 @@ const ChatContent = () => {
     </div>
 
   return (
-    <CardContent className="flex-1 overflow-y-auto space-y-4 h-[calc(80vh)]">
+    <CardContent className="flex-1 overflow-y-auto space-y-4 sm:h-[calc(80vh)] pt-1">
       {messages.map((message, index: number) => {
         const isCurrentUser = message.senderId === user?._id;
         return (

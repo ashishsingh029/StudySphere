@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import ChatContent from "@/components/workspace/Chat/chat-content";
-import ChatFooter from "@/components/workspace/Chat/chat-footer";
+import ChatContent from "@/components/workspace/chat/chat-content"
+import ChatFooter from "@/components/workspace/chat/chat-footer";
 import { ChatSkeleton } from "@/components/skeleton-loaders/chat-skeleton";
 import { useChatStore } from "@/store/use-chat-store";
 import useWorkspaceId from "@/hooks/use-workspace-id";
@@ -30,7 +30,7 @@ const Chat = () => {
   }, [user, socket, workspaceId]);
 
   return (
-    <Card className="flex flex-1 flex-col md:pt-3 h-[calc(88vh)] ">
+    <Card className="flex flex-1 flex-col pt-2 sm:h-[calc(88vh)] h-[calc(85vh)]">
       {isMessagesLoading ? (
         <ChatSkeleton />
       ) : (
