@@ -19,6 +19,7 @@ import { createWorkspaceMutationFn } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
+import { DialogTitle, DialogDescription } from "../ui/dialog";
 
 export default function CreateWorkspaceForm({
   onClose,
@@ -78,16 +79,16 @@ export default function CreateWorkspaceForm({
     <main className="w-full flex flex-row min-h-[590px] h-auto max-w-full">
       <div className="h-full px-10 py-10 flex-1">
         <div className="mb-5">
-          <h1
+          <DialogTitle
             className="text-2xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1.5
            text-center sm:text-left"
           >
             Let's build a Workspace
-          </h1>
-          <p className="text-muted-foreground text-lg leading-tight">
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground text-lg leading-tight">
             Boost your productivity by making it easier for everyone to access
             plans in one location.
-          </p>
+          </DialogDescription>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

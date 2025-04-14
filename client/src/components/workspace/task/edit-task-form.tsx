@@ -135,7 +135,7 @@ export default function EditTaskForm(props: {
             Edit Task
           </DialogTitle>
           <DialogDescription>
-            Edit the tasks here
+            Update the task details to refine task management
           </DialogDescription>
         </div>
         <Form {...form}>

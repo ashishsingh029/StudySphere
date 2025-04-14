@@ -25,6 +25,7 @@ import useWorkspaceId from "@/hooks/use-workspace-id";
 import { editProjectMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
+import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 export default function EditProjectForm(props: {
   project?: ProjectType;
@@ -108,15 +109,15 @@ export default function EditProjectForm(props: {
     <div className="w-full h-auto max-w-full">
       <div className="h-full">
         <div className="mb-5 pb-2 border-b">
-          <h1
+          <DialogTitle
             className="text-xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1
            text-center sm:text-left"
           >
             Edit Plan
-          </h1>
-          <p className="text-muted-foreground text-sm leading-tight">
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground text-sm leading-tight">
             Update the plan details to refine task management
-          </p>
+          </DialogDescription>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
