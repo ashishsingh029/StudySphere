@@ -28,12 +28,13 @@ import { CalendarIcon, Loader } from "lucide-react";
 import { TaskType } from "@/types/api.type";
 import useGetWorkspaceMembers from "@/hooks/api/use-get-workspace-members";
 import { useAuthContext } from "@/context/auth-provider";
-import { Popover, PopoverContent,PopoverTrigger, } from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
+import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
-export default function EditTaskForm(props:{
+export default function EditTaskForm(props: {
   task?: TaskType;
   onClose: () => void;
 }) {
@@ -118,10 +119,10 @@ export default function EditTaskForm(props:{
       },
       onError: (error: any) => {
         toast({
-            title: "Error",
-            description: error.response?.data.message,
-            variant: "destructive",
-          });
+          title: "Error",
+          description: error.response?.data.message,
+          variant: "destructive",
+        });
       },
     });
   };
@@ -130,9 +131,12 @@ export default function EditTaskForm(props:{
     <div className="w-full h-auto max-w-full">
       <div className="h-full">
         <div className="mb-5 pb-2 border-b">
-          <h1 className="text-xl font-semibold mb-1 text-center sm:text-left">
+          <DialogTitle className="text-xl font-semibold mb-1 text-center sm:text-left">
             Edit Task
-          </h1>
+          </DialogTitle>
+          <DialogDescription>
+            Edit the tasks here
+          </DialogDescription>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

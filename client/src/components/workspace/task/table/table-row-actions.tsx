@@ -76,7 +76,9 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem
-            onClick={() => setIsEditOpen(true)}
+            onClick={() => {
+              setTimeout(() => setIsEditOpen(true), 0);
+            }}
             className="cursor-pointer"
           >
             Edit Task
@@ -95,10 +97,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       {/* Edit Task Dialog */}
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="sm:max-w-lg max-h-auto my-5 border-0">
-          <DialogTitle className="sr-only">Edit Task</DialogTitle>
-          {/* <DialogDescription>
-            Update the details of your task to keep the project organized.
-          </DialogDescription> */}
           <EditTaskForm task={task} onClose={() => setIsEditOpen(false)} />
         </DialogContent>
       </Dialog>

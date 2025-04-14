@@ -183,7 +183,7 @@ export default function CreateTaskForm(props: {
       <div className="h-full">
         <div className="mb-5 pb-2 border-b">
           <DialogTitle className="text-xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1 text-center sm:text-left">
-              Create Task 
+            Create Task
           </DialogTitle>
           <DialogDescription>
             Organize and manage tasks, resources, and team collaboration
