@@ -41,6 +41,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createTaskMutationFn } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
+import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 
 export default function CreateTaskForm(props: {
   projectId?: string;
@@ -181,15 +182,12 @@ export default function CreateTaskForm(props: {
     <div className="w-full h-auto max-w-full">
       <div className="h-full">
         <div className="mb-5 pb-2 border-b">
-          <h1
-            className="text-xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1
-           text-center sm:text-left"
-          >
-            Create Task
-          </h1>
-          <p className="text-muted-foreground text-sm leading-tight">
+          <DialogTitle className="text-xl tracking-[-0.16px] dark:text-[#fcfdffef] font-semibold mb-1 text-center sm:text-left">
+              Create Task 
+          </DialogTitle>
+          <DialogDescription>
             Organize and manage tasks, resources, and team collaboration
-          </p>
+          </DialogDescription>
         </div>
         <Form {...form}>
           <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
@@ -355,7 +353,7 @@ export default function CreateTaskForm(props: {
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent className="w-auto p-0 pointer-events-auto" align="start">
                         <Calendar
                           mode="single"
                           selected={field.value}
@@ -363,8 +361,8 @@ export default function CreateTaskForm(props: {
                           disabled={
                             (date) =>
                               date <
-                                new Date(new Date().setHours(0, 0, 0, 0)) || 
-                              date > new Date("2100-12-31") 
+                              new Date(new Date().setHours(0, 0, 0, 0)) ||
+                              date > new Date("2100-12-31")
                           }
                           initialFocus
                           defaultMonth={new Date()}

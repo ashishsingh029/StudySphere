@@ -21,10 +21,6 @@ const CreateTaskDialog = (props: { projectId?: string }) => {
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-lg max-h-auto my-5 border-0">
-          {/* <DialogTitle className="">Create New Task</DialogTitle>
-          <DialogDescription>
-          Organize and manage tasks, resources, and team collaboration
-          </DialogDescription> */}
           <CreateTaskForm projectId={props.projectId} onClose={onClose} />
         </DialogContent>
       </Dialog>

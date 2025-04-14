@@ -28,19 +28,17 @@ import { CalendarIcon, Loader } from "lucide-react";
 import { TaskType } from "@/types/api.type";
 import useGetWorkspaceMembers from "@/hooks/api/use-get-workspace-members";
 import { useAuthContext } from "@/context/auth-provider";
-import { Popover, PopoverContent } from "@/components/ui/popover";
-import { PopoverTrigger } from "@radix-ui/react-popover";
+import { Popover, PopoverContent,PopoverTrigger, } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 
-export default function EditTaskForm({
-  task,
-  onClose,
-}: {
+export default function EditTaskForm(props:{
   task?: TaskType;
   onClose: () => void;
 }) {
+
+  const { task, onClose } = props;
   const workspaceId = useWorkspaceId();
   const queryClient = useQueryClient();
   const { user } = useAuthContext();
