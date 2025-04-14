@@ -15,6 +15,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router-dom";
 import useWorkspaceId from "@/hooks/use-workspace-id";
@@ -44,6 +45,8 @@ export function NavMain() {
   const location = useLocation();
 
   const pathname = location.pathname;
+
+    const { isMobile } = useSidebar();
 
   const items: ItemType[] = [
     {
@@ -109,7 +112,7 @@ export function NavMain() {
                     </div>
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent side="right" align="start" className="ml-2">
+                <DropdownMenuContent side={isMobile ? "bottom" : "right"} align="start" className="w-[--radix-dropdown-menu-trigger-width] text-base">
                   <DropdownMenuItem asChild>
                     <Link to={`${item.url}/create`}>
                       Create Room
