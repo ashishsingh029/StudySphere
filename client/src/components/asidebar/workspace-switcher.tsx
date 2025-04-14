@@ -137,7 +137,11 @@ export function WorkspaceSwitcher() {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="gap-2 p-2 !cursor-pointer"
-                onClick={onOpen}
+                onClick={() => {
+                  setTimeout(() => {
+                    onOpen();
+                  }, 0);
+                }}
               >
                 <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                   <Plus className="size-4" />
