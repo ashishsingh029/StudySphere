@@ -3,6 +3,8 @@
 .vscode/
 **/.idea/
 **/.vscode/
+
+# react build directory
 **/dist/
 
 **/package-lock.json
