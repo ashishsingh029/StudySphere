@@ -106,7 +106,11 @@ const Asidebar = () => {
                   >
                     <DropdownMenuGroup></DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => setIsOpen(true)}>
+                    <DropdownMenuItem onClick={() => {
+                      setTimeout(() => {
+                        setIsOpen(true);
+                      }, 0);
+                    }}>
                       <LogOut />
                       Log out
                     </DropdownMenuItem>
