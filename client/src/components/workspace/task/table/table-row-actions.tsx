@@ -87,7 +87,9 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="!text-destructive cursor-pointer"
-            onClick={() => setOpenDeleteDialog(true)}
+            onClick={() => setTimeout(() => {
+              setOpenDeleteDialog(true)
+            }, 0)}
           >
             Delete Task
           </DropdownMenuItem>
